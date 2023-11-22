@@ -73,7 +73,7 @@ namespace DrawGraph
             {
                 // Очистка pictureBox
                 g.Clear(Color.White);
-                Font weightFont = new Font(Font.FontFamily, 10f);
+                Font weightFont = new Font(Font.FontFamily, 12f);
                 Font boldFont = new Font(Font, FontStyle.Bold);
                 //Рисование ребер
                 foreach (var edge in edges)
@@ -102,13 +102,15 @@ namespace DrawGraph
                     float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
                     float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
 
-                    float x = vertex.Position.X - textWidth / (float)2.5;
-                    float y = vertex.Position.Y - textHeight / (float)2.5;
+                    float x = vertex.Position.X - textWidth / (float)4;
+                    float y = vertex.Position.Y - textHeight / (float)2;
 
-                    float circleCenterX = vertex.Position.X - textWidth;
-                    float circleCenterY = vertex.Position.Y - textHeight;
+                    float circleCenterX = vertex.Position.X - textWidth/ (float)1.5;
+                    float circleCenterY = vertex.Position.Y - textHeight/ (float)1.5;
+
+
                     // Рисование контура круга
-                    using (Pen circlePen = new Pen(Color.Black, 4f))
+                    using (Pen circlePen = new Pen(Color.Black, 3f))
                     {
                         g.DrawEllipse(circlePen, circleCenterX, circleCenterY, 25, 25);
                     }

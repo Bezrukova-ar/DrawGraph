@@ -65,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,6 +79,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pointinghand_100160.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pointinghand_1001601.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\курсор.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\circle_icon_211799.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\line_icon_151229.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pencil-striped-symbol-for-interface-edit-buttons_icon-icons.com_56782.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\close_circle_remove_delete_icon_149506.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\trashcan_delete_remove_trash_icon_178327.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
