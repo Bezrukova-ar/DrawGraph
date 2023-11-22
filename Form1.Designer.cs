@@ -30,13 +30,13 @@ namespace DrawGraph
         private void InitializeComponent()
         {
             this.buildGraphButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.sheet = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
             this.SuspendLayout();
             // 
             // buildGraphButton
             // 
-            this.buildGraphButton.Location = new System.Drawing.Point(763, 51);
+            this.buildGraphButton.Location = new System.Drawing.Point(832, 12);
             this.buildGraphButton.Name = "buildGraphButton";
             this.buildGraphButton.Size = new System.Drawing.Size(181, 46);
             this.buildGraphButton.TabIndex = 0;
@@ -44,24 +44,24 @@ namespace DrawGraph
             this.buildGraphButton.UseVisualStyleBackColor = true;
             this.buildGraphButton.Click += new System.EventHandler(this.BuildGraphButton_Click);
             // 
-            // pictureBox1
+            // sheet
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(24, 66);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(611, 380);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
+            this.sheet.Location = new System.Drawing.Point(86, 78);
+            this.sheet.Name = "sheet";
+            this.sheet.Size = new System.Drawing.Size(611, 380);
+            this.sheet.TabIndex = 4;
+            this.sheet.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(985, 497);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(1039, 536);
+            this.Controls.Add(this.sheet);
             this.Controls.Add(this.buildGraphButton);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -69,7 +69,7 @@ namespace DrawGraph
         #endregion
 
         private System.Windows.Forms.Button buildGraphButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox sheet;
     }
 }
 

@@ -41,26 +41,44 @@ namespace DrawGraph
             edges.Clear();
 
             //Параметры моего графа
-            vertices.Add(new Vertex { Number = 1, Position = new Point(50, 50) });
-            vertices.Add(new Vertex { Number = 2, Position = new Point(150, 50) });
-            vertices.Add(new Vertex { Number = 3, Position = new Point(100, 150) });
+            //координаты вершин
+            vertices.Add(new Vertex { Number = 1, Position = new Point(300, 45) });
+            vertices.Add(new Vertex { Number = 2, Position = new Point(385, 90) });
+            vertices.Add(new Vertex { Number = 3, Position = new Point(430, 175) });
+            vertices.Add(new Vertex { Number = 4, Position = new Point(385, 260) });
+            vertices.Add(new Vertex { Number = 5, Position = new Point(300, 305) });
+            vertices.Add(new Vertex { Number = 6, Position = new Point(215, 260) });
+            vertices.Add(new Vertex { Number = 7, Position = new Point(170, 175) });          
+            vertices.Add(new Vertex { Number = 8, Position = new Point(215, 90) });
 
-            edges.Add(new Edge { StartVertex = 1, EndVertex = 2, Weight = 5 });
-            edges.Add(new Edge { StartVertex = 2, EndVertex = 3, Weight = 8 });
+            //какие вершины соединяют ребра                
+            edges.Add(new Edge { StartVertex = 1, EndVertex = 2, Weight = 2 });
+            edges.Add(new Edge { StartVertex = 1, EndVertex = 8, Weight = 5 });
+            edges.Add(new Edge { StartVertex = 2, EndVertex = 8, Weight = 3 });
+            edges.Add(new Edge { StartVertex = 2, EndVertex = 6, Weight = 1 });
+            edges.Add(new Edge { StartVertex = 2, EndVertex = 4, Weight = 1 });
+            edges.Add(new Edge { StartVertex = 3, EndVertex = 7, Weight = 7 });
+            edges.Add(new Edge { StartVertex = 3, EndVertex = 4, Weight = 5 });
+            edges.Add(new Edge { StartVertex = 3, EndVertex = 4, Weight = 5 });
+            edges.Add(new Edge { StartVertex = 4, EndVertex = 8, Weight = 2 });
+            edges.Add(new Edge { StartVertex = 4, EndVertex = 5, Weight = 1 });
+            edges.Add(new Edge { StartVertex = 5, EndVertex = 6, Weight = 2 });
 
             // Построение графа
             DrawGraph();
         }
         private void DrawGraph()
         {
-            using (Graphics g = pictureBox1.CreateGraphics())
+            using (Graphics g = sheet.CreateGraphics())
             {
                 // Очистка pictureBox
                 g.Clear(Color.White);
-
-                // Рисование ребер
+                Font weightFont = new Font(Font.FontFamily, 10f);
+                Font boldFont = new Font(Font, FontStyle.Bold);
+                //Рисование ребер
                 foreach (var edge in edges)
                 {
+                    
                     Point start = vertices.Find(v => v.Number == edge.StartVertex).Position;
                     Point end = vertices.Find(v => v.Number == edge.EndVertex).Position;
 
@@ -70,9 +88,12 @@ namespace DrawGraph
                         g.DrawLine(edgePen, start, end);
                     }
 
-                    // Вывод веса ребра рядом с ним
-                    Point weightPosition = new Point((start.X + end.X) / 2, (start.Y + end.Y) / 2);
-                    g.DrawString(edge.Weight.ToString(), Font, Brushes.Red, weightPosition);
+                    // Вычисление позиции для веса в первой трети ребра
+                    float weightPositionX = start.X + (end.X - start.X) / 3;
+                    float weightPositionY = start.Y + (end.Y - start.Y) / 3;
+
+                    // Вывод веса ребра в первой трети
+                    g.DrawString(edge.Weight.ToString(), weightFont, Brushes.Red, weightPositionX, weightPositionY);
                 }
 
                 // Рисование вершин
@@ -81,22 +102,22 @@ namespace DrawGraph
                     float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
                     float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
 
-                    float x = vertex.Position.X - textWidth / 2;
-                    float y = vertex.Position.Y - textHeight / 2;
+                    float x = vertex.Position.X - textWidth / (float)2.5;
+                    float y = vertex.Position.Y - textHeight / (float)2.5;
 
                     float circleCenterX = vertex.Position.X - textWidth;
                     float circleCenterY = vertex.Position.Y - textHeight;
                     // Рисование контура круга
-                    using (Pen circlePen = new Pen(Color.Black, 2f))
+                    using (Pen circlePen = new Pen(Color.Black, 4f))
                     {
-                        g.DrawEllipse(circlePen, circleCenterX, circleCenterY, 20, 20);
+                        g.DrawEllipse(circlePen, circleCenterX, circleCenterY, 25, 25);
                     }
 
                     // Закрашивание круга
-                    g.FillEllipse(Brushes.LightSkyBlue, circleCenterX, circleCenterY, 20, 20);
+                    g.FillEllipse(Brushes.LightCyan, circleCenterX, circleCenterY, 25, 25);
 
                     // Рисование номера вершины
-                    g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, x, y);
+                    g.DrawString(vertex.Number.ToString(), boldFont, Brushes.Black, x, y);
                 }
             }
         }
