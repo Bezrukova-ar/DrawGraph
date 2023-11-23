@@ -75,6 +75,7 @@ namespace DrawGraph
                 g.Clear(Color.White);
                 Font weightFont = new Font(Font.FontFamily, 12f);
                 Font boldFont = new Font(Font, FontStyle.Bold);
+
                 //Рисование ребер
                 foreach (var edge in edges)
                 {
@@ -93,33 +94,31 @@ namespace DrawGraph
                     float weightPositionY = start.Y + (end.Y - start.Y) / 3;
 
                     // Вывод веса ребра в первой трети
-                    g.DrawString(edge.Weight.ToString(), weightFont, Brushes.Red, weightPositionX, weightPositionY);
+                    g.DrawString(edge.Weight.ToString(), weightFont, Brushes.DarkRed, weightPositionX, weightPositionY);
                 }
-
                 // Рисование вершин
                 foreach (var vertex in vertices)
                 {
                     float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
                     float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
 
-                    float x = vertex.Position.X - textWidth / (float)4;
-                    float y = vertex.Position.Y - textHeight / (float)2;
-
-                    float circleCenterX = vertex.Position.X - textWidth/ (float)1.5;
-                    float circleCenterY = vertex.Position.Y - textHeight/ (float)1.5;
-
+                    // Учитываем радиус круга при расчете координат центра
+                    float x = vertex.Position.X - 10;  // Учитываем половину диаметра (20/2)
+                    float y = vertex.Position.Y - 10;  // Учитываем половину диаметра (20/2)
 
                     // Рисование контура круга
                     using (Pen circlePen = new Pen(Color.Black, 3f))
                     {
-                        g.DrawEllipse(circlePen, circleCenterX, circleCenterY, 25, 25);
+                        g.DrawEllipse(circlePen, x, y, 20, 20);
                     }
-
                     // Закрашивание круга
-                    g.FillEllipse(Brushes.LightCyan, circleCenterX, circleCenterY, 25, 25);
+                    g.FillEllipse(Brushes.LavenderBlush, x, y, 20, 20);
 
-                    // Рисование номера вершины
-                    g.DrawString(vertex.Number.ToString(), boldFont, Brushes.Black, x, y);
+                    // Рисование номера вершины в центре
+                    float textX = x - textWidth / 2 + 10;  // Учитываем половину ширины текста
+                    float textY = y - textHeight / 2 + 10; // Учитываем половину высоты текста
+
+                    g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
                 }
             }
         }
