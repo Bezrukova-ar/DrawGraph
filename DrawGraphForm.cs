@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DrawGraph
 {
-    public partial class Form1 : Form
+    public partial class DrawGraphForm : Form
     {
-        public Form1()
+        public DrawGraphForm()
         {
             InitializeComponent();
         }
@@ -96,6 +96,7 @@ namespace DrawGraph
                     // Вывод веса ребра в первой трети
                     g.DrawString(edge.Weight.ToString(), weightFont, Brushes.DarkRed, weightPositionX, weightPositionY);
                 }
+
                 // Рисование вершин
                 foreach (var vertex in vertices)
                 {

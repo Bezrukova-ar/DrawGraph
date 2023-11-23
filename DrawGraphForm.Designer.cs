@@ -1,7 +1,7 @@
 ﻿
 namespace DrawGraph
 {
-    partial class Form1
+    partial class DrawGraphForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -39,9 +39,18 @@ namespace DrawGraph
             this.drawVertexRB = new System.Windows.Forms.RadioButton();
             this.selectElementRB = new System.Windows.Forms.RadioButton();
             this.sheet = new System.Windows.Forms.PictureBox();
+            this.calculationOfVertexAdjacencyMatrixBTN = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.vertexAdjacencyMatrixLB = new System.Windows.Forms.ListBox();
+            this.searchForElementaryCyclesBTN = new System.Windows.Forms.Button();
+            this.weightMatrixLB = new System.Windows.Forms.ListBox();
+            this.weightMatrixCalculationBTN = new System.Windows.Forms.Button();
+            this.buildingALLPathsBTN = new System.Windows.Forms.Button();
+            this.saveGrathBTN = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // buildGraphButton
@@ -49,7 +58,7 @@ namespace DrawGraph
             this.buildGraphButton.BackColor = System.Drawing.Color.Thistle;
             this.buildGraphButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buildGraphButton.Location = new System.Drawing.Point(379, 28);
-            this.buildGraphButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.buildGraphButton.Margin = new System.Windows.Forms.Padding(5);
             this.buildGraphButton.Name = "buildGraphButton";
             this.buildGraphButton.Size = new System.Drawing.Size(280, 57);
             this.buildGraphButton.TabIndex = 0;
@@ -63,9 +72,10 @@ namespace DrawGraph
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65.03831F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34.96169F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -86,10 +96,10 @@ namespace DrawGraph
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox1.Location = new System.Drawing.Point(5, 5);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.groupBox1.Size = new System.Drawing.Size(669, 671);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox1.Size = new System.Drawing.Size(668, 671);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Команды для работы с графом";
@@ -98,6 +108,7 @@ namespace DrawGraph
             // 
             this.deleteALLGraphRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.deleteALLGraphRB.AutoSize = true;
+            this.deleteALLGraphRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.deleteALLGraphRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.deleteALLGraphRB.Image = global::DrawGraph.Properties.Resources.trashcan_delete_remove_trash_icon_178327;
             this.deleteALLGraphRB.Location = new System.Drawing.Point(315, 29);
@@ -111,6 +122,7 @@ namespace DrawGraph
             // 
             this.deleteElementRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.deleteElementRB.AutoSize = true;
+            this.deleteElementRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.deleteElementRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.deleteElementRB.Image = global::DrawGraph.Properties.Resources.close_circle_remove_delete_icon_149506;
             this.deleteElementRB.Location = new System.Drawing.Point(253, 29);
@@ -124,6 +136,7 @@ namespace DrawGraph
             // 
             this.editingEdgeWeightRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.editingEdgeWeightRB.AutoSize = true;
+            this.editingEdgeWeightRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.editingEdgeWeightRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.editingEdgeWeightRB.Image = global::DrawGraph.Properties.Resources.pencil_striped_symbol_for_interface_edit_buttons_icon_icons_com_56782;
             this.editingEdgeWeightRB.Location = new System.Drawing.Point(191, 29);
@@ -137,6 +150,7 @@ namespace DrawGraph
             // 
             this.drawEdgeRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.drawEdgeRB.AutoSize = true;
+            this.drawEdgeRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.drawEdgeRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.drawEdgeRB.Image = global::DrawGraph.Properties.Resources.line_icon_151229;
             this.drawEdgeRB.Location = new System.Drawing.Point(129, 29);
@@ -150,6 +164,7 @@ namespace DrawGraph
             // 
             this.drawVertexRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.drawVertexRB.AutoSize = true;
+            this.drawVertexRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.drawVertexRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.drawVertexRB.Image = global::DrawGraph.Properties.Resources.circle_icon_211799;
             this.drawVertexRB.Location = new System.Drawing.Point(67, 29);
@@ -163,6 +178,7 @@ namespace DrawGraph
             // 
             this.selectElementRB.Appearance = System.Windows.Forms.Appearance.Button;
             this.selectElementRB.AutoSize = true;
+            this.selectElementRB.FlatAppearance.CheckedBackColor = System.Drawing.Color.Thistle;
             this.selectElementRB.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.selectElementRB.Image = global::DrawGraph.Properties.Resources.pointinghand_100160;
             this.selectElementRB.Location = new System.Drawing.Point(8, 29);
@@ -180,11 +196,106 @@ namespace DrawGraph
             this.sheet.Location = new System.Drawing.Point(0, 95);
             this.sheet.Margin = new System.Windows.Forms.Padding(5);
             this.sheet.Name = "sheet";
-            this.sheet.Size = new System.Drawing.Size(669, 567);
+            this.sheet.Size = new System.Drawing.Size(668, 576);
             this.sheet.TabIndex = 4;
             this.sheet.TabStop = false;
             // 
-            // Form1
+            // calculationOfVertexAdjacencyMatrixBTN
+            // 
+            this.calculationOfVertexAdjacencyMatrixBTN.BackColor = System.Drawing.Color.Thistle;
+            this.calculationOfVertexAdjacencyMatrixBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.calculationOfVertexAdjacencyMatrixBTN.Location = new System.Drawing.Point(2, 29);
+            this.calculationOfVertexAdjacencyMatrixBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.calculationOfVertexAdjacencyMatrixBTN.Name = "calculationOfVertexAdjacencyMatrixBTN";
+            this.calculationOfVertexAdjacencyMatrixBTN.Size = new System.Drawing.Size(117, 171);
+            this.calculationOfVertexAdjacencyMatrixBTN.TabIndex = 11;
+            this.calculationOfVertexAdjacencyMatrixBTN.Text = "Расчет матрицы смежности вершин";
+            this.calculationOfVertexAdjacencyMatrixBTN.UseVisualStyleBackColor = false;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.saveGrathBTN);
+            this.groupBox2.Controls.Add(this.buildingALLPathsBTN);
+            this.groupBox2.Controls.Add(this.weightMatrixCalculationBTN);
+            this.groupBox2.Controls.Add(this.weightMatrixLB);
+            this.groupBox2.Controls.Add(this.searchForElementaryCyclesBTN);
+            this.groupBox2.Controls.Add(this.vertexAdjacencyMatrixLB);
+            this.groupBox2.Controls.Add(this.calculationOfVertexAdjacencyMatrixBTN);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(681, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(360, 675);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Вычисления:";
+            // 
+            // vertexAdjacencyMatrixLB
+            // 
+            this.vertexAdjacencyMatrixLB.FormattingEnabled = true;
+            this.vertexAdjacencyMatrixLB.ItemHeight = 21;
+            this.vertexAdjacencyMatrixLB.Location = new System.Drawing.Point(128, 28);
+            this.vertexAdjacencyMatrixLB.Name = "vertexAdjacencyMatrixLB";
+            this.vertexAdjacencyMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.vertexAdjacencyMatrixLB.TabIndex = 12;
+            // 
+            // searchForElementaryCyclesBTN
+            // 
+            this.searchForElementaryCyclesBTN.BackColor = System.Drawing.Color.Thistle;
+            this.searchForElementaryCyclesBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.searchForElementaryCyclesBTN.Location = new System.Drawing.Point(9, 410);
+            this.searchForElementaryCyclesBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.searchForElementaryCyclesBTN.Name = "searchForElementaryCyclesBTN";
+            this.searchForElementaryCyclesBTN.Size = new System.Drawing.Size(343, 66);
+            this.searchForElementaryCyclesBTN.TabIndex = 13;
+            this.searchForElementaryCyclesBTN.Text = "Алгоритм Деикстры";
+            this.searchForElementaryCyclesBTN.UseVisualStyleBackColor = false;
+            // 
+            // weightMatrixLB
+            // 
+            this.weightMatrixLB.FormattingEnabled = true;
+            this.weightMatrixLB.ItemHeight = 21;
+            this.weightMatrixLB.Location = new System.Drawing.Point(128, 210);
+            this.weightMatrixLB.Name = "weightMatrixLB";
+            this.weightMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.weightMatrixLB.TabIndex = 14;
+            // 
+            // weightMatrixCalculationBTN
+            // 
+            this.weightMatrixCalculationBTN.BackColor = System.Drawing.Color.Thistle;
+            this.weightMatrixCalculationBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.weightMatrixCalculationBTN.Location = new System.Drawing.Point(3, 210);
+            this.weightMatrixCalculationBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.weightMatrixCalculationBTN.Name = "weightMatrixCalculationBTN";
+            this.weightMatrixCalculationBTN.Size = new System.Drawing.Size(117, 171);
+            this.weightMatrixCalculationBTN.TabIndex = 15;
+            this.weightMatrixCalculationBTN.Text = "Расчет матрицы весов";
+            this.weightMatrixCalculationBTN.UseVisualStyleBackColor = false;
+            // 
+            // buildingALLPathsBTN
+            // 
+            this.buildingALLPathsBTN.BackColor = System.Drawing.Color.Thistle;
+            this.buildingALLPathsBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buildingALLPathsBTN.Location = new System.Drawing.Point(8, 486);
+            this.buildingALLPathsBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.buildingALLPathsBTN.Name = "buildingALLPathsBTN";
+            this.buildingALLPathsBTN.Size = new System.Drawing.Size(343, 66);
+            this.buildingALLPathsBTN.TabIndex = 16;
+            this.buildingALLPathsBTN.Text = "Построение всех путей";
+            this.buildingALLPathsBTN.UseVisualStyleBackColor = false;
+            // 
+            // saveGrathBTN
+            // 
+            this.saveGrathBTN.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.saveGrathBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.saveGrathBTN.Location = new System.Drawing.Point(9, 601);
+            this.saveGrathBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.saveGrathBTN.Name = "saveGrathBTN";
+            this.saveGrathBTN.Size = new System.Drawing.Size(343, 66);
+            this.saveGrathBTN.TabIndex = 17;
+            this.saveGrathBTN.Text = "Сохранить граф";
+            this.saveGrathBTN.UseVisualStyleBackColor = false;
+            // 
+            // DrawGraphForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -192,15 +303,16 @@ namespace DrawGraph
             this.ClientSize = new System.Drawing.Size(1044, 681);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Microsoft PhagsPa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.MaximumSize = new System.Drawing.Size(1060, 720);
             this.MinimumSize = new System.Drawing.Size(1060, 720);
-            this.Name = "Form1";
+            this.Name = "DrawGraphForm";
             this.Text = "Графопостроитель";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -217,6 +329,14 @@ namespace DrawGraph
         private System.Windows.Forms.RadioButton drawEdgeRB;
         private System.Windows.Forms.RadioButton drawVertexRB;
         private System.Windows.Forms.RadioButton selectElementRB;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListBox vertexAdjacencyMatrixLB;
+        private System.Windows.Forms.Button calculationOfVertexAdjacencyMatrixBTN;
+        private System.Windows.Forms.Button saveGrathBTN;
+        private System.Windows.Forms.Button buildingALLPathsBTN;
+        private System.Windows.Forms.Button weightMatrixCalculationBTN;
+        private System.Windows.Forms.ListBox weightMatrixLB;
+        private System.Windows.Forms.Button searchForElementaryCyclesBTN;
     }
 }
 
