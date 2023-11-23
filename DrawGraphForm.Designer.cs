@@ -199,6 +199,8 @@ namespace DrawGraph
             this.sheet.Size = new System.Drawing.Size(668, 576);
             this.sheet.TabIndex = 4;
             this.sheet.TabStop = false;
+            this.sheet.Paint += new System.Windows.Forms.PaintEventHandler(this.sheet_Paint);
+            this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
             // 
             // calculationOfVertexAdjacencyMatrixBTN
             // 
