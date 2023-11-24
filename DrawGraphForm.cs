@@ -13,7 +13,7 @@ namespace DrawGraph
 {
     public partial class DrawGraphForm : Form
     {
-        
+
         public DrawGraphForm()
         {
             InitializeComponent();
@@ -36,7 +36,7 @@ namespace DrawGraph
                 Position = position;
             }
         }
-       
+
         private class Edge
         {
             public int StartVertex { get; set; }
@@ -62,24 +62,23 @@ namespace DrawGraph
             vertices.Add(new Vertex(1, new Point(300, 45)));
             vertices.Add(new Vertex(2, new Point(385, 90)));
             vertices.Add(new Vertex(3, new Point(430, 175)));
-            vertices.Add(new Vertex ( 4, new Point(385, 260) ));
-            vertices.Add(new Vertex ( 5, new Point(300, 305) ));
-            vertices.Add(new Vertex ( 6, new Point(215, 260) ));
-            vertices.Add(new Vertex ( 7, new Point(170, 175) ));          
-            vertices.Add(new Vertex ( 8,  new Point(215, 90) ));
+            vertices.Add(new Vertex(4, new Point(385, 260)));
+            vertices.Add(new Vertex(5, new Point(300, 305)));
+            vertices.Add(new Vertex(6, new Point(215, 260)));
+            vertices.Add(new Vertex(7, new Point(170, 175)));
+            vertices.Add(new Vertex(8, new Point(215, 90)));
 
             //какие вершины соединяют ребра                
-            edges.Add(new Edge ( 1, 2,  2 ));
-            edges.Add(new Edge ( 1, 8, 5 ));
-            edges.Add(new Edge ( 2, 8, 3 ));
-            edges.Add(new Edge ( 2, 6, 1 ));
-            edges.Add(new Edge ( 2, 4, 1 ));
-            edges.Add(new Edge ( 3, 7, 7 ));
-            edges.Add(new Edge ( 3, 4, 5 ));
-            edges.Add(new Edge ( 3, 4, 5 ));
-            edges.Add(new Edge ( 4, 8, 2 ));
-            edges.Add(new Edge ( 4, 5, 1 ));
-            edges.Add(new Edge ( 5, 6, 2 ));
+            edges.Add(new Edge(1, 2, 2));
+            edges.Add(new Edge(1, 8, 5));
+            edges.Add(new Edge(2, 8, 3));
+            edges.Add(new Edge(2, 6, 1));
+            edges.Add(new Edge(2, 4, 1));
+            edges.Add(new Edge(3, 7, 7));
+            edges.Add(new Edge(3, 4, 5));
+            edges.Add(new Edge(4, 8, 2));
+            edges.Add(new Edge(4, 5, 1));
+            edges.Add(new Edge(5, 6, 2));
 
             // Построение графа
             DrawGraph();
@@ -97,7 +96,7 @@ namespace DrawGraph
                 //Рисование ребер
                 foreach (var edge in edges)
                 {
-                    
+
                     Point start = vertices.Find(v => v.Number == edge.StartVertex).Position;
                     Point end = vertices.Find(v => v.Number == edge.EndVertex).Position;
 
@@ -142,8 +141,7 @@ namespace DrawGraph
             }
         }
 
-        //обработчик щелчка мыши по pictureBox
-        
+        //обработчик щелчка мыши по pictureBox   
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             if (drawVertexRB.Checked) // Выполняется если выбран drawVertexRB - отвечает за отрисовку вершины
@@ -183,7 +181,7 @@ namespace DrawGraph
                             {
                                 MessageBox.Show("Программа не поддерживает рисование петлей, выберите пару разных ребер");
                             }
-                            else 
+                            else
                             {
                                 // Вывод окошка для ввода веса ребра
                                 int weight = GetWeightFromUserInput();
@@ -191,14 +189,14 @@ namespace DrawGraph
                                 // Создание нового ребра и добавление его в коллекцию ребер
                                 Edge newEdge = new Edge(selectedStartVertex, selectedEndVertex, weight);
                                 edges.Add(newEdge);
-    
+
                                 // Сброс выбранных вершин
                                 selectedStartVertex = -1;
-    
+
                                 // Перерисовка PictureBox 
-                                sheet.Invalidate(); 
+                                sheet.Invalidate();
                             }
-                            
+
                         }
                         else
                         {
@@ -211,7 +209,7 @@ namespace DrawGraph
                     }
                 }
             }
-            if(editingEdgeWeightRB.Checked)//Редактирование веса ребра
+            if (editingEdgeWeightRB.Checked)//Редактирование веса ребра
             {
                 // Получить координаты щелчка
                 Point clickPoint = sheet.PointToClient(Cursor.Position);
@@ -256,6 +254,28 @@ namespace DrawGraph
                 {
                     Edge clickedEdge = (Edge)clickedElement;
                     ShowEdgeInfo(clickedEdge);
+                }
+            }
+            if (deleteElementRB.Checked) //Удаление элемента
+            {
+                // Получить позицию щелчка мыши
+                Point mouseClick = sheet.PointToClient(Cursor.Position);
+                // Определите тип элемента (вершина или ребро) 
+                object clickedElement = GetClickedElement(mouseClick);
+                // Удалить выбранный элемент
+                if (clickedElement is Vertex)
+                {
+                    Vertex clickedVertex = (Vertex)clickedElement;
+                    //Метод удаления вершины
+                    deleteVertex(clickedVertex);
+                    sheet.Invalidate();
+                }
+                else if (clickedElement is Edge)
+                {
+                    Edge clickedEdge = (Edge)clickedElement;
+                    //Метод удаления ребра
+                    deleteEdge(clickedEdge);
+                    sheet.Invalidate();
                 }
             }
         }
@@ -311,7 +331,7 @@ namespace DrawGraph
 
                 g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
             }
-           
+
         }
         // Метод для проверки, существует ли ребро между двумя вершинами
         private bool EdgeExists(int startVertex, int endVertex)
@@ -362,7 +382,7 @@ namespace DrawGraph
         {
             foreach (Vertex vertex in vertices)
             {
-                int vertexRadius = 10; 
+                int vertexRadius = 10;
 
                 // Проверка, находится ли позиция в пределах вершины
                 if (Math.Pow(position.X - vertex.Position.X, 2) + Math.Pow(position.Y - vertex.Position.Y, 2) <= Math.Pow(vertexRadius, 2))
@@ -439,7 +459,7 @@ namespace DrawGraph
             // Проверка на то, что щелчок внутри вершины
             foreach (Vertex vertex in vertices)
             {
-                
+
                 if (IsPointInCircle(clickPosition, vertex.Position, 10))
                 {
                     return vertex;
@@ -488,6 +508,47 @@ namespace DrawGraph
             degree += edges.Count(edge => edge.EndVertex == vertex.Number);
 
             return degree;
+        }
+        //Функция удаления ребра
+        private void deleteEdge(Edge edge)
+        {
+            edges.Remove(edge);
+        }
+        //Функция удаления верщины
+        private void deleteVertex(Vertex vertex)
+        {
+            double x = vertex.Position.X;
+            double y = vertex.Position.Y;
+            Vertex vertexToRemove = vertices.Find(v => v.Position.X == x && v.Position.Y == y);
+            //int maxVertexNumber = 0; //для определения максимального номера вершины в коллекции
+
+            if (vertexToRemove != null)
+            {
+                int removedVertexNumber = vertexToRemove.Number;
+                vertices.Remove(vertexToRemove);
+
+
+                //Перенумерация вершин
+                for (int i = 0; i < vertices.Count; i++)
+                {
+                    vertices[i].Number = i + 1;
+                }
+
+                edges.RemoveAll(e => e.StartVertex == vertexToRemove.Number || e.EndVertex == vertexToRemove.Number);
+                //перенумерация
+                foreach (var edge in edges)
+                {
+                    if (edge.StartVertex > removedVertexNumber)
+                    {
+                        edge.StartVertex -= 1;
+                    }
+                    if (edge.EndVertex > removedVertexNumber)
+                    {
+                        edge.EndVertex -= 1;
+                    }
+                }
+            }
+
         }
     }
 }
