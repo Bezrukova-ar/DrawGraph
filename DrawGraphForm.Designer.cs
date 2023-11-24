@@ -39,14 +39,14 @@ namespace DrawGraph
             this.drawVertexRB = new System.Windows.Forms.RadioButton();
             this.selectElementRB = new System.Windows.Forms.RadioButton();
             this.sheet = new System.Windows.Forms.PictureBox();
-            this.calculationOfVertexAdjacencyMatrixBTN = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.vertexAdjacencyMatrixLB = new System.Windows.Forms.ListBox();
-            this.searchForElementaryCyclesBTN = new System.Windows.Forms.Button();
-            this.weightMatrixLB = new System.Windows.Forms.ListBox();
-            this.weightMatrixCalculationBTN = new System.Windows.Forms.Button();
-            this.buildingALLPathsBTN = new System.Windows.Forms.Button();
             this.saveGrathBTN = new System.Windows.Forms.Button();
+            this.buildingALLPathsBTN = new System.Windows.Forms.Button();
+            this.weightMatrixCalculationBTN = new System.Windows.Forms.Button();
+            this.weightMatrixLB = new System.Windows.Forms.ListBox();
+            this.searchForElementaryCyclesBTN = new System.Windows.Forms.Button();
+            this.vertexAdjacencyMatrixLB = new System.Windows.Forms.ListBox();
+            this.calculationOfVertexAdjacencyMatrixBTN = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sheet)).BeginInit();
@@ -117,6 +117,7 @@ namespace DrawGraph
             this.deleteALLGraphRB.TabIndex = 10;
             this.deleteALLGraphRB.TabStop = true;
             this.deleteALLGraphRB.UseVisualStyleBackColor = true;
+            this.deleteALLGraphRB.Click += new System.EventHandler(this.deleteALLGraphRB_CheckedChanged);
             // 
             // deleteElementRB
             // 
@@ -202,18 +203,6 @@ namespace DrawGraph
             this.sheet.Paint += new System.Windows.Forms.PaintEventHandler(this.sheet_Paint);
             this.sheet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.sheet_MouseClick);
             // 
-            // calculationOfVertexAdjacencyMatrixBTN
-            // 
-            this.calculationOfVertexAdjacencyMatrixBTN.BackColor = System.Drawing.Color.Thistle;
-            this.calculationOfVertexAdjacencyMatrixBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.calculationOfVertexAdjacencyMatrixBTN.Location = new System.Drawing.Point(2, 29);
-            this.calculationOfVertexAdjacencyMatrixBTN.Margin = new System.Windows.Forms.Padding(5);
-            this.calculationOfVertexAdjacencyMatrixBTN.Name = "calculationOfVertexAdjacencyMatrixBTN";
-            this.calculationOfVertexAdjacencyMatrixBTN.Size = new System.Drawing.Size(117, 171);
-            this.calculationOfVertexAdjacencyMatrixBTN.TabIndex = 11;
-            this.calculationOfVertexAdjacencyMatrixBTN.Text = "Расчет матрицы смежности вершин";
-            this.calculationOfVertexAdjacencyMatrixBTN.UseVisualStyleBackColor = false;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.saveGrathBTN);
@@ -231,47 +220,17 @@ namespace DrawGraph
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Вычисления:";
             // 
-            // vertexAdjacencyMatrixLB
+            // saveGrathBTN
             // 
-            this.vertexAdjacencyMatrixLB.FormattingEnabled = true;
-            this.vertexAdjacencyMatrixLB.ItemHeight = 21;
-            this.vertexAdjacencyMatrixLB.Location = new System.Drawing.Point(128, 28);
-            this.vertexAdjacencyMatrixLB.Name = "vertexAdjacencyMatrixLB";
-            this.vertexAdjacencyMatrixLB.Size = new System.Drawing.Size(223, 172);
-            this.vertexAdjacencyMatrixLB.TabIndex = 12;
-            // 
-            // searchForElementaryCyclesBTN
-            // 
-            this.searchForElementaryCyclesBTN.BackColor = System.Drawing.Color.Thistle;
-            this.searchForElementaryCyclesBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.searchForElementaryCyclesBTN.Location = new System.Drawing.Point(9, 410);
-            this.searchForElementaryCyclesBTN.Margin = new System.Windows.Forms.Padding(5);
-            this.searchForElementaryCyclesBTN.Name = "searchForElementaryCyclesBTN";
-            this.searchForElementaryCyclesBTN.Size = new System.Drawing.Size(343, 66);
-            this.searchForElementaryCyclesBTN.TabIndex = 13;
-            this.searchForElementaryCyclesBTN.Text = "Алгоритм Деикстры";
-            this.searchForElementaryCyclesBTN.UseVisualStyleBackColor = false;
-            // 
-            // weightMatrixLB
-            // 
-            this.weightMatrixLB.FormattingEnabled = true;
-            this.weightMatrixLB.ItemHeight = 21;
-            this.weightMatrixLB.Location = new System.Drawing.Point(128, 210);
-            this.weightMatrixLB.Name = "weightMatrixLB";
-            this.weightMatrixLB.Size = new System.Drawing.Size(223, 172);
-            this.weightMatrixLB.TabIndex = 14;
-            // 
-            // weightMatrixCalculationBTN
-            // 
-            this.weightMatrixCalculationBTN.BackColor = System.Drawing.Color.Thistle;
-            this.weightMatrixCalculationBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.weightMatrixCalculationBTN.Location = new System.Drawing.Point(3, 210);
-            this.weightMatrixCalculationBTN.Margin = new System.Windows.Forms.Padding(5);
-            this.weightMatrixCalculationBTN.Name = "weightMatrixCalculationBTN";
-            this.weightMatrixCalculationBTN.Size = new System.Drawing.Size(117, 171);
-            this.weightMatrixCalculationBTN.TabIndex = 15;
-            this.weightMatrixCalculationBTN.Text = "Расчет матрицы весов";
-            this.weightMatrixCalculationBTN.UseVisualStyleBackColor = false;
+            this.saveGrathBTN.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.saveGrathBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.saveGrathBTN.Location = new System.Drawing.Point(9, 601);
+            this.saveGrathBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.saveGrathBTN.Name = "saveGrathBTN";
+            this.saveGrathBTN.Size = new System.Drawing.Size(343, 66);
+            this.saveGrathBTN.TabIndex = 17;
+            this.saveGrathBTN.Text = "Сохранить граф";
+            this.saveGrathBTN.UseVisualStyleBackColor = false;
             // 
             // buildingALLPathsBTN
             // 
@@ -285,17 +244,59 @@ namespace DrawGraph
             this.buildingALLPathsBTN.Text = "Построение всех путей";
             this.buildingALLPathsBTN.UseVisualStyleBackColor = false;
             // 
-            // saveGrathBTN
+            // weightMatrixCalculationBTN
             // 
-            this.saveGrathBTN.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.saveGrathBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.saveGrathBTN.Location = new System.Drawing.Point(9, 601);
-            this.saveGrathBTN.Margin = new System.Windows.Forms.Padding(5);
-            this.saveGrathBTN.Name = "saveGrathBTN";
-            this.saveGrathBTN.Size = new System.Drawing.Size(343, 66);
-            this.saveGrathBTN.TabIndex = 17;
-            this.saveGrathBTN.Text = "Сохранить граф";
-            this.saveGrathBTN.UseVisualStyleBackColor = false;
+            this.weightMatrixCalculationBTN.BackColor = System.Drawing.Color.Thistle;
+            this.weightMatrixCalculationBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.weightMatrixCalculationBTN.Location = new System.Drawing.Point(3, 210);
+            this.weightMatrixCalculationBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.weightMatrixCalculationBTN.Name = "weightMatrixCalculationBTN";
+            this.weightMatrixCalculationBTN.Size = new System.Drawing.Size(117, 171);
+            this.weightMatrixCalculationBTN.TabIndex = 15;
+            this.weightMatrixCalculationBTN.Text = "Расчет матрицы весов";
+            this.weightMatrixCalculationBTN.UseVisualStyleBackColor = false;
+            // 
+            // weightMatrixLB
+            // 
+            this.weightMatrixLB.FormattingEnabled = true;
+            this.weightMatrixLB.ItemHeight = 21;
+            this.weightMatrixLB.Location = new System.Drawing.Point(128, 210);
+            this.weightMatrixLB.Name = "weightMatrixLB";
+            this.weightMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.weightMatrixLB.TabIndex = 14;
+            // 
+            // searchForElementaryCyclesBTN
+            // 
+            this.searchForElementaryCyclesBTN.BackColor = System.Drawing.Color.Thistle;
+            this.searchForElementaryCyclesBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.searchForElementaryCyclesBTN.Location = new System.Drawing.Point(9, 410);
+            this.searchForElementaryCyclesBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.searchForElementaryCyclesBTN.Name = "searchForElementaryCyclesBTN";
+            this.searchForElementaryCyclesBTN.Size = new System.Drawing.Size(343, 66);
+            this.searchForElementaryCyclesBTN.TabIndex = 13;
+            this.searchForElementaryCyclesBTN.Text = "Алгоритм Деикстры";
+            this.searchForElementaryCyclesBTN.UseVisualStyleBackColor = false;
+            // 
+            // vertexAdjacencyMatrixLB
+            // 
+            this.vertexAdjacencyMatrixLB.FormattingEnabled = true;
+            this.vertexAdjacencyMatrixLB.ItemHeight = 21;
+            this.vertexAdjacencyMatrixLB.Location = new System.Drawing.Point(128, 28);
+            this.vertexAdjacencyMatrixLB.Name = "vertexAdjacencyMatrixLB";
+            this.vertexAdjacencyMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.vertexAdjacencyMatrixLB.TabIndex = 12;
+            // 
+            // calculationOfVertexAdjacencyMatrixBTN
+            // 
+            this.calculationOfVertexAdjacencyMatrixBTN.BackColor = System.Drawing.Color.Thistle;
+            this.calculationOfVertexAdjacencyMatrixBTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.calculationOfVertexAdjacencyMatrixBTN.Location = new System.Drawing.Point(2, 29);
+            this.calculationOfVertexAdjacencyMatrixBTN.Margin = new System.Windows.Forms.Padding(5);
+            this.calculationOfVertexAdjacencyMatrixBTN.Name = "calculationOfVertexAdjacencyMatrixBTN";
+            this.calculationOfVertexAdjacencyMatrixBTN.Size = new System.Drawing.Size(117, 171);
+            this.calculationOfVertexAdjacencyMatrixBTN.TabIndex = 11;
+            this.calculationOfVertexAdjacencyMatrixBTN.Text = "Расчет матрицы смежности вершин";
+            this.calculationOfVertexAdjacencyMatrixBTN.UseVisualStyleBackColor = false;
             // 
             // DrawGraphForm
             // 

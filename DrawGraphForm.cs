@@ -210,6 +210,7 @@ namespace DrawGraph
                     }
                 }
             }
+   
 
         }
         // Обработчик события отрисовки содержимого PictureBox
@@ -277,23 +278,37 @@ namespace DrawGraph
         // Метод для получения веса ребра от пользователя
         private int GetWeightFromUserInput()
         {
-            // Вывод окошка с запросом веса
-            // (ваш код для взаимодействия с пользователем, например, через InputBox)
-            // Предположим, что результат ввода пользователя сохраняется в переменной userInput
-            /* int userInput = GetUserInput();
+            int weight = 0;
+            bool validInput = false;
 
-             // Проверка, что введенное значение - целое число
-             if (int.TryParse(userInput, out int weight))
-             {
-                 return weight;
-             }
-             else
-             {
-                 // Обработка случая, когда введенное значение не является целым числом
-                 MessageBox.Show("Введите целочисленное значение.");
-                 return 0; // Или другое значение по умолчанию
-             }*/
-            return 5;
+            while (!validInput)
+            {
+                string input = Interaction.InputBox("Введите вес ребра (целое положительное число):", "Ввод веса ребра");
+                // Проверка на отмену ввода
+                if (input == "")
+                {
+                    MessageBox.Show("Ввод отменен. Попробуйте еще раз.");
+                    continue;
+                }
+                // Попытка преобразовать введенное значение в целое число
+                if (int.TryParse(input, out weight))
+                {
+                    // Проверка на положительное число
+                    if (weight > 0)
+                    {
+                        validInput = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите положительное число.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Введите корректное целое число.");
+                }
+            }
+            return weight;
         }
 
         // Метод для получения номера вершины по ее позиции на PictureBox
@@ -309,10 +324,22 @@ namespace DrawGraph
                     return vertex.Number;
                 }
             }
-
             // Если не найдено ни одной вершины в указанной позиции
             return -1;
         }
 
+        //Когда нажата кнопка удалить все
+        private void deleteALLGraphRB_CheckedChanged(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Вы точно хотите удалить граф полностью?", "Удаление графа", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            // Проверяем результат нажатия кнопки
+            if (result == DialogResult.Yes)
+            {
+                vertices.Clear();
+                edges.Clear();
+                sheet.Invalidate();
+            }
+        }
     }
 }
