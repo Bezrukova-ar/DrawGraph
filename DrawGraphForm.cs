@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,7 @@ namespace DrawGraph
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
 
+
         // Вложенные классы для представления вершин и ребер
         private class Vertex
         {
@@ -39,6 +41,13 @@ namespace DrawGraph
             public int StartVertex { get; set; }
             public int EndVertex { get; set; }
             public int Weight { get; set; }
+
+            public Edge(int startVertex, int endVertex, int weight)
+            {
+                StartVertex = startVertex;
+                EndVertex = endVertex;
+                Weight = weight;
+            }
         }
         //Загрузка графа-индивидуального задания
         private void BuildGraphButton_Click(object sender, EventArgs e)
@@ -59,17 +68,17 @@ namespace DrawGraph
             vertices.Add(new Vertex ( 8,  new Point(215, 90) ));
 
             //какие вершины соединяют ребра                
-            edges.Add(new Edge { StartVertex = 1, EndVertex = 2, Weight = 2 });
-            edges.Add(new Edge { StartVertex = 1, EndVertex = 8, Weight = 5 });
-            edges.Add(new Edge { StartVertex = 2, EndVertex = 8, Weight = 3 });
-            edges.Add(new Edge { StartVertex = 2, EndVertex = 6, Weight = 1 });
-            edges.Add(new Edge { StartVertex = 2, EndVertex = 4, Weight = 1 });
-            edges.Add(new Edge { StartVertex = 3, EndVertex = 7, Weight = 7 });
-            edges.Add(new Edge { StartVertex = 3, EndVertex = 4, Weight = 5 });
-            edges.Add(new Edge { StartVertex = 3, EndVertex = 4, Weight = 5 });
-            edges.Add(new Edge { StartVertex = 4, EndVertex = 8, Weight = 2 });
-            edges.Add(new Edge { StartVertex = 4, EndVertex = 5, Weight = 1 });
-            edges.Add(new Edge { StartVertex = 5, EndVertex = 6, Weight = 2 });
+            edges.Add(new Edge ( 1, 2,  2 ));
+            edges.Add(new Edge ( 1, 8, 5 ));
+            edges.Add(new Edge ( 2, 8, 3 ));
+            edges.Add(new Edge ( 2, 6, 1 ));
+            edges.Add(new Edge ( 2, 4, 1 ));
+            edges.Add(new Edge ( 3, 7, 7 ));
+            edges.Add(new Edge ( 3, 4, 5 ));
+            edges.Add(new Edge ( 3, 4, 5 ));
+            edges.Add(new Edge ( 4, 8, 2 ));
+            edges.Add(new Edge ( 4, 5, 1 ));
+            edges.Add(new Edge ( 5, 6, 2 ));
 
             // Построение графа
             DrawGraph();
@@ -149,41 +158,46 @@ namespace DrawGraph
                 // Перерисовка содержимого PictureBox для отображения добавленной вершины
                 sheet.Invalidate();
             }
+            if (drawEdgeRB.Checked) //Выполняется если выбран drawEdgeRB -отвечает за отрисовку рёбер
+            {
+                   
+            }
         }
+
+
         // Обработчик события отрисовки содержимого PictureBox
         private void sheet_Paint(object sender, PaintEventArgs e)
         {
             // Создайте объект Graphics для рисования на PictureBox
             Graphics g = e.Graphics;
-            if (drawVertexRB.Checked) // Выполняется если выбран drawVertexRB - отвечает за отрисовку вершины
+          
+            // Рисование каждой вершины из коллекции vertices
+            foreach (Vertex vertex in vertices)
             {
-                // Рисование каждой вершины из коллекции vertices
-                foreach (Vertex vertex in vertices)
+
+                float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
+                float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
+
+                // Учитываем радиус круга при расчете координат центра
+                float x = vertex.Position.X - 10;  // Учитываем половину диаметра (20/2)
+                float y = vertex.Position.Y - 10;  // Учитываем половину диаметра (20/2)
+
+                // Рисование контура круга
+                using (Pen circlePen = new Pen(Color.Black, 3f))
                 {
-
-                    float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
-                    float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
-
-                    // Учитываем радиус круга при расчете координат центра
-                    float x = vertex.Position.X - 10;  // Учитываем половину диаметра (20/2)
-                    float y = vertex.Position.Y - 10;  // Учитываем половину диаметра (20/2)
-
-                    // Рисование контура круга
-                    using (Pen circlePen = new Pen(Color.Black, 3f))
-                    {
-                        g.DrawEllipse(circlePen, x, y, 20, 20);
-                    }
-                    // Закрашивание круга
-                    g.FillEllipse(Brushes.LavenderBlush, x, y, 20, 20);
-
-                    // Рисование номера вершины в центре
-                    float textX = x - textWidth / 2 + 10;  // Учитываем половину ширины текста
-                    float textY = y - textHeight / 2 + 10; // Учитываем половину высоты текста
-
-                    g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
+                    g.DrawEllipse(circlePen, x, y, 20, 20);
                 }
+                // Закрашивание круга
+                g.FillEllipse(Brushes.LavenderBlush, x, y, 20, 20);
+
+                // Рисование номера вершины в центре
+                float textX = x - textWidth / 2 + 10;  // Учитываем половину ширины текста
+                float textY = y - textHeight / 2 + 10; // Учитываем половину высоты текста
+
+                g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
             }
+
         }
-        
+       
     }
 }
