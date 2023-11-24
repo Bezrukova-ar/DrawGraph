@@ -210,8 +210,34 @@ namespace DrawGraph
                     }
                 }
             }
-   
+            if(editingEdgeWeightRB.Checked)//Редактирование веса ребра
+            {
+                // Получить координаты щелчка
+                Point clickPoint = sheet.PointToClient(Cursor.Position);
 
+                // Проверьте, находится ли щелчок на каком-то ребре
+                foreach (Edge edge in edges)
+                {
+                    Vertex startVertex = vertices.Find(v => v.Number == edge.StartVertex);
+                    Vertex endVertex = vertices.Find(v => v.Number == edge.EndVertex);
+
+                    // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
+                    if (IsPointNearLineSegment(clickPoint, startVertex.Position, endVertex.Position, 5))
+                    {
+                        // При щелчке по ребру, откройте диалоговое окно для ввода нового веса
+                        int newWeight = GetWeightFromUserInput();
+
+                        // Обновите вес ребра в коллекции
+                        edge.Weight = newWeight;
+
+                        //Перерисовки PictureBox с обновленными данными
+                        sheet.Invalidate();
+
+                        break;
+                    }
+                }
+            }    
+   
         }
         // Обработчик события отрисовки содержимого PictureBox
         private void sheet_Paint(object sender, PaintEventArgs e)
@@ -341,5 +367,52 @@ namespace DrawGraph
                 sheet.Invalidate();
             }
         }
+        // Метод для проверки, лежит ли точка на отрезке
+        private bool IsPointNearLineSegment(Point point, Point start, Point end, int tolerance)
+        {
+            double distance = PointToLineDistance(point, start, end);
+
+            // Проверка, находится ли точка в пределах погрешности
+            return distance <= tolerance;
+        }
+
+        // Метод для расчета расстояния от точки до линии, проходящей через start и end
+        private double PointToLineDistance(Point point, Point start, Point end)
+        {
+            double a = point.X - start.X;
+            double b = point.Y - start.Y;
+            double c = end.X - start.X;
+            double d = end.Y - start.Y;
+
+            double dotProduct = a * c + b * d;
+            double lengthSquared = c * c + d * d;
+
+            double param = dotProduct / lengthSquared;
+
+            double closestX, closestY;
+
+            if (param < 0 || (start.X == end.X && start.Y == end.Y))
+            {
+                closestX = start.X;
+                closestY = start.Y;
+            }
+            else if (param > 1)
+            {
+                closestX = end.X;
+                closestY = end.Y;
+            }
+            else
+            {
+                closestX = start.X + param * c;
+                closestY = start.Y + param * d;
+            }
+
+            double dx = point.X - closestX;
+            double dy = point.Y - closestY;
+
+            return Math.Sqrt(dx * dx + dy * dy);
+        }
+
+
     }
 }
