@@ -18,6 +18,7 @@ namespace DrawGraph
         {
             InitializeComponent();
         }
+
         int selectedStartVertex = -1; //Выбор вершины для рисования ребер
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
@@ -550,5 +551,50 @@ namespace DrawGraph
             }
 
         }
+        //Событие вычисления матрицы смежности
+        private void calculationOfVertexAdjacencyMatrixBTN_Click(object sender, EventArgs e)
+        {
+            
+        }
+        //вычисление матрицы весов
+        private void weightMatrixCalculationBTN_Click(object sender, EventArgs e)
+        {
+            int[,] adjacencyMatrix = GetAdjacencyMatrix();
+            weightMatrixLB.Items.Clear();
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                string row = ""; 
+
+                for (int j = 0; j < vertices.Count; j++)
+                {
+                    row += $"{adjacencyMatrix[i, j],6}";
+                }
+
+                weightMatrixLB.Items.Add(row);
+            }
+        }
+        //Метод вычисления матрицы весов
+        public int[,] GetAdjacencyMatrix()
+        {
+            // Получаем количество вершин
+            int vertexCount = vertices.Count;
+
+            // Создаем двумерный массив для матрицы весов
+            int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
+
+            // Заполняем матрицу смежности
+            foreach (Edge edge in edges)
+            {
+                // Вес ребра
+                int weight = edge.Weight;
+
+                // Устанавливаем связь между начальной и конечной вершинами
+                adjacencyMatrix[edge.StartVertex - 1, edge.EndVertex - 1] = weight;
+                adjacencyMatrix[edge.EndVertex - 1, edge.StartVertex - 1] = weight; // Для неориентированного графа
+            }
+
+            return adjacencyMatrix;
+        }
+
     }
 }

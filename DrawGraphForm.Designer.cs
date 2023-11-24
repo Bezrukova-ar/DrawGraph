@@ -251,18 +251,19 @@ namespace DrawGraph
             this.weightMatrixCalculationBTN.Location = new System.Drawing.Point(3, 210);
             this.weightMatrixCalculationBTN.Margin = new System.Windows.Forms.Padding(5);
             this.weightMatrixCalculationBTN.Name = "weightMatrixCalculationBTN";
-            this.weightMatrixCalculationBTN.Size = new System.Drawing.Size(117, 171);
+            this.weightMatrixCalculationBTN.Size = new System.Drawing.Size(102, 171);
             this.weightMatrixCalculationBTN.TabIndex = 15;
             this.weightMatrixCalculationBTN.Text = "Расчет матрицы весов";
             this.weightMatrixCalculationBTN.UseVisualStyleBackColor = false;
+            this.weightMatrixCalculationBTN.Click += new System.EventHandler(this.weightMatrixCalculationBTN_Click);
             // 
             // weightMatrixLB
             // 
             this.weightMatrixLB.FormattingEnabled = true;
             this.weightMatrixLB.ItemHeight = 21;
-            this.weightMatrixLB.Location = new System.Drawing.Point(128, 210);
+            this.weightMatrixLB.Location = new System.Drawing.Point(113, 210);
             this.weightMatrixLB.Name = "weightMatrixLB";
-            this.weightMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.weightMatrixLB.Size = new System.Drawing.Size(247, 172);
             this.weightMatrixLB.TabIndex = 14;
             // 
             // searchForElementaryCyclesBTN
@@ -281,9 +282,9 @@ namespace DrawGraph
             // 
             this.vertexAdjacencyMatrixLB.FormattingEnabled = true;
             this.vertexAdjacencyMatrixLB.ItemHeight = 21;
-            this.vertexAdjacencyMatrixLB.Location = new System.Drawing.Point(128, 28);
+            this.vertexAdjacencyMatrixLB.Location = new System.Drawing.Point(113, 28);
             this.vertexAdjacencyMatrixLB.Name = "vertexAdjacencyMatrixLB";
-            this.vertexAdjacencyMatrixLB.Size = new System.Drawing.Size(223, 172);
+            this.vertexAdjacencyMatrixLB.Size = new System.Drawing.Size(247, 172);
             this.vertexAdjacencyMatrixLB.TabIndex = 12;
             // 
             // calculationOfVertexAdjacencyMatrixBTN
@@ -293,10 +294,11 @@ namespace DrawGraph
             this.calculationOfVertexAdjacencyMatrixBTN.Location = new System.Drawing.Point(2, 29);
             this.calculationOfVertexAdjacencyMatrixBTN.Margin = new System.Windows.Forms.Padding(5);
             this.calculationOfVertexAdjacencyMatrixBTN.Name = "calculationOfVertexAdjacencyMatrixBTN";
-            this.calculationOfVertexAdjacencyMatrixBTN.Size = new System.Drawing.Size(117, 171);
+            this.calculationOfVertexAdjacencyMatrixBTN.Size = new System.Drawing.Size(103, 171);
             this.calculationOfVertexAdjacencyMatrixBTN.TabIndex = 11;
             this.calculationOfVertexAdjacencyMatrixBTN.Text = "Расчет матрицы смежности вершин";
             this.calculationOfVertexAdjacencyMatrixBTN.UseVisualStyleBackColor = false;
+            this.calculationOfVertexAdjacencyMatrixBTN.Click += new System.EventHandler(this.calculationOfVertexAdjacencyMatrixBTN_Click);
             // 
             // DrawGraphForm
             // 
