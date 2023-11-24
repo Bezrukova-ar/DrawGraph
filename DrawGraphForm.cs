@@ -13,6 +13,7 @@ namespace DrawGraph
 {
     public partial class DrawGraphForm : Form
     {
+        
         public DrawGraphForm()
         {
             InitializeComponent();
@@ -236,8 +237,27 @@ namespace DrawGraph
                         break;
                     }
                 }
-            }    
-   
+            }
+            if (selectElementRB.Checked) //Вывод информации об элементе
+            {
+                // Получить позицию щелчка мыши
+                Point mouseClick = sheet.PointToClient(Cursor.Position);
+
+                // Определите тип элемента (вершина или ребро) 
+                object clickedElement = GetClickedElement(mouseClick);
+
+                // Отображение информации о выбранном элементе 
+                if (clickedElement is Vertex)
+                {
+                    Vertex clickedVertex = (Vertex)clickedElement;
+                    ShowVertexInfo(clickedVertex);
+                }
+                else if (clickedElement is Edge)
+                {
+                    Edge clickedEdge = (Edge)clickedElement;
+                    ShowEdgeInfo(clickedEdge);
+                }
+            }
         }
         // Обработчик события отрисовки содержимого PictureBox
         private void sheet_Paint(object sender, PaintEventArgs e)
@@ -413,6 +433,61 @@ namespace DrawGraph
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
+        // Функция для определения типа элемента
+        private object GetClickedElement(Point clickPosition)
+        {
+            // Проверка на то, что щелчок внутри вершины
+            foreach (Vertex vertex in vertices)
+            {
+                
+                if (IsPointInCircle(clickPosition, vertex.Position, 10))
+                {
+                    return vertex;
+                }
+            }
+            // Проверьте, находится ли щелчок на каком-то ребре
+            foreach (Edge edge in edges)
+            {
+                Vertex startVertex = vertices.Find(v => v.Number == edge.StartVertex);
+                Vertex endVertex = vertices.Find(v => v.Number == edge.EndVertex);
 
+                // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
+                if (IsPointNearLineSegment(clickPosition, startVertex.Position, endVertex.Position, 5))
+                {
+                    return edge;
+                }
+            }
+            return null; //Не найден элемент
+        }
+        // Проверка того, что щелк внутри вершины
+        private bool IsPointInCircle(Point point, Point center, int radius)
+        {
+            int distanceSquared = (point.X - center.X) * (point.X - center.X) + (point.Y - center.Y) * (point.Y - center.Y);
+            return distanceSquared <= radius * radius;
+        }
+
+        //вывод информации если элемент - вершина
+        private void ShowVertexInfo(Vertex vertex)
+        {
+            MessageBox.Show($"Номер вершины: {vertex.Number}\nСтепень вершины: {GetVertexDegree(vertex)}", "Информация об элементе");
+        }
+        //вывод информации если элемент - ребро
+        private void ShowEdgeInfo(Edge edge)
+        {
+            MessageBox.Show($"Вес ребра: {edge.Weight}\nПервая вершина: {edge.StartVertex}\nВторая вершина: {edge.EndVertex}", "Информация об элементе");
+        }
+        // Функция для получения степени вершины 
+        private int GetVertexDegree(Vertex vertex)
+        {
+            int degree = 0;
+
+            // количесвто вхождений как ак первая вершина
+            degree += edges.Count(edge => edge.StartVertex == vertex.Number);
+
+            // количесвто вхождений как вторая вершина
+            degree += edges.Count(edge => edge.EndVertex == vertex.Number);
+
+            return degree;
+        }
     }
 }
