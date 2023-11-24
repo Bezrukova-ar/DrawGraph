@@ -17,7 +17,7 @@ namespace DrawGraph
         {
             InitializeComponent();
         }
-
+        int selectedStartVertex = -1; //Выбор вершины для рисования ребер
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
 
@@ -142,6 +142,7 @@ namespace DrawGraph
         }
 
         //обработчик щелчка мыши по pictureBox
+        
         private void sheet_MouseClick(object sender, MouseEventArgs e)
         {
             if (drawVertexRB.Checked) // Выполняется если выбран drawVertexRB - отвечает за отрисовку вершины
@@ -160,17 +161,84 @@ namespace DrawGraph
             }
             if (drawEdgeRB.Checked) //Выполняется если выбран drawEdgeRB -отвечает за отрисовку рёбер
             {
-                   
+                int selectedVertexNumber = GetVertexNumberByPosition(e.Location); // Получение номера вершины по ее позиции
+
+                if (selectedVertexNumber != -1)
+                {
+                    if (selectedStartVertex == -1)
+                    {
+                        // Если еще нет выбранной вершины, то выберем ее
+                        selectedStartVertex = selectedVertexNumber;
+                    }
+                    else
+                    {
+                        // Если уже есть выбранная вершина, то выберем вторую вершину
+                        int selectedEndVertex = selectedVertexNumber;
+
+                        // Проверка, что между выбранными вершинами еще нет ребра
+                        if (!EdgeExists(selectedStartVertex, selectedEndVertex))
+                        {
+                            if (selectedStartVertex == selectedEndVertex)
+                            {
+                                MessageBox.Show("Программа не поддерживает рисование петлей, выберите пару разных ребер");
+                            }
+                            else 
+                            {
+                                // Вывод окошка для ввода веса ребра
+                                int weight = GetWeightFromUserInput();
+
+                                // Создание нового ребра и добавление его в коллекцию ребер
+                                Edge newEdge = new Edge(selectedStartVertex, selectedEndVertex, weight);
+                                edges.Add(newEdge);
+    
+                                // Сброс выбранных вершин
+                                selectedStartVertex = -1;
+    
+                                // Перерисовка PictureBox 
+                                sheet.Invalidate(); 
+                            }
+                            
+                        }
+                        else
+                        {
+                            // Обработка случая, когда между вершинами уже есть ребро
+                            MessageBox.Show("Ребро между выбранными вершинами уже существует.");
+
+                            // Сброс выбранной вершины, чтобы выбрать новую пару
+                            selectedStartVertex = -1;
+                        }
+                    }
+                }
             }
+
         }
-
-
         // Обработчик события отрисовки содержимого PictureBox
         private void sheet_Paint(object sender, PaintEventArgs e)
         {
             // Создайте объект Graphics для рисования на PictureBox
             Graphics g = e.Graphics;
-          
+            Font weightFont = new Font(Font.FontFamily, 12f);
+            //Рисование ребер
+            foreach (var edge in edges)
+            {
+
+                Point start = vertices.Find(v => v.Number == edge.StartVertex).Position;
+                Point end = vertices.Find(v => v.Number == edge.EndVertex).Position;
+
+                // Рисование толстых линий
+                using (Pen edgePen = new Pen(Color.Black, 2f))
+                {
+                    g.DrawLine(edgePen, start, end);
+                }
+
+                // Вычисление позиции для веса в первой трети ребра
+                float weightPositionX = start.X + (end.X - start.X) / 3;
+                float weightPositionY = start.Y + (end.Y - start.Y) / 3;
+
+                // Вывод веса ребра в первой трети
+                g.DrawString(edge.Weight.ToString(), weightFont, Brushes.DarkRed, weightPositionX, weightPositionY);
+            }
+
             // Рисование каждой вершины из коллекции vertices
             foreach (Vertex vertex in vertices)
             {
@@ -196,8 +264,55 @@ namespace DrawGraph
 
                 g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
             }
-
+           
         }
-       
+        // Метод для проверки, существует ли ребро между двумя вершинами
+        private bool EdgeExists(int startVertex, int endVertex)
+        {
+            return edges.Any(edge =>
+                (edge.StartVertex == startVertex && edge.EndVertex == endVertex) ||
+                (edge.StartVertex == endVertex && edge.EndVertex == startVertex));
+        }
+
+        // Метод для получения веса ребра от пользователя
+        private int GetWeightFromUserInput()
+        {
+            // Вывод окошка с запросом веса
+            // (ваш код для взаимодействия с пользователем, например, через InputBox)
+            // Предположим, что результат ввода пользователя сохраняется в переменной userInput
+            /* int userInput = GetUserInput();
+
+             // Проверка, что введенное значение - целое число
+             if (int.TryParse(userInput, out int weight))
+             {
+                 return weight;
+             }
+             else
+             {
+                 // Обработка случая, когда введенное значение не является целым числом
+                 MessageBox.Show("Введите целочисленное значение.");
+                 return 0; // Или другое значение по умолчанию
+             }*/
+            return 5;
+        }
+
+        // Метод для получения номера вершины по ее позиции на PictureBox
+        private int GetVertexNumberByPosition(Point position)
+        {
+            foreach (Vertex vertex in vertices)
+            {
+                int vertexRadius = 10; 
+
+                // Проверка, находится ли позиция в пределах вершины
+                if (Math.Pow(position.X - vertex.Position.X, 2) + Math.Pow(position.Y - vertex.Position.Y, 2) <= Math.Pow(vertexRadius, 2))
+                {
+                    return vertex.Number;
+                }
+            }
+
+            // Если не найдено ни одной вершины в указанной позиции
+            return -1;
+        }
+
     }
 }
