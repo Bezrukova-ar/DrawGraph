@@ -554,12 +554,24 @@ namespace DrawGraph
         //Событие вычисления матрицы смежности
         private void calculationOfVertexAdjacencyMatrixBTN_Click(object sender, EventArgs e)
         {
-            
+            int[,] adjacencyMatrix = GetAdjacencyMatrixVertex();
+            vertexAdjacencyMatrixLB.Items.Clear();
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                string row = "";
+
+                for (int j = 0; j < vertices.Count; j++)
+                {
+                    row += $"{adjacencyMatrix[i, j],6}";
+                }
+
+                vertexAdjacencyMatrixLB.Items.Add(row);
+            }
         }
-        //вычисление матрицы весов
+        //Событие вычисление матрицы весов
         private void weightMatrixCalculationBTN_Click(object sender, EventArgs e)
         {
-            int[,] adjacencyMatrix = GetAdjacencyMatrix();
+            int[,] adjacencyMatrix = GetAdjacencyMatrixWeight();
             weightMatrixLB.Items.Clear();
             for (int i = 0; i < vertices.Count; i++)
             {
@@ -574,7 +586,7 @@ namespace DrawGraph
             }
         }
         //Метод вычисления матрицы весов
-        public int[,] GetAdjacencyMatrix()
+        public int[,] GetAdjacencyMatrixWeight()
         {
             // Получаем количество вершин
             int vertexCount = vertices.Count;
@@ -582,7 +594,7 @@ namespace DrawGraph
             // Создаем двумерный массив для матрицы весов
             int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
 
-            // Заполняем матрицу смежности
+            // Заполняем матрицу весов
             foreach (Edge edge in edges)
             {
                 // Вес ребра
@@ -594,6 +606,23 @@ namespace DrawGraph
             }
 
             return adjacencyMatrix;
+        }
+        //Метод вычисления матрицы смежности вершин
+        public int[,] GetAdjacencyMatrixVertex()
+        {
+            // Получаем количество вершин
+            int vertexCount = vertices.Count;
+            // Создаем двумерный массив для матрицы смежности
+            int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
+            // Заполняем матрицу смежности
+            foreach (Edge edge in edges)
+            {
+                // Устанавливаем связь между начальной и конечной вершинами
+                adjacencyMatrix[edge.StartVertex - 1, edge.EndVertex - 1] = 1;
+                adjacencyMatrix[edge.EndVertex - 1, edge.StartVertex - 1] = 1; // Для неориентированного графа
+            }
+            return adjacencyMatrix;
+
         }
 
     }
