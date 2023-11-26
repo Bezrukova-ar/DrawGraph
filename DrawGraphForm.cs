@@ -22,6 +22,7 @@ namespace DrawGraph
         int selectedStartVertex = -1; //Выбор вершины для рисования ребер
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
+        private List<string> cyclesList = new List<string>(); // Коллекция для хранения циклов
 
 
         // Вложенные классы для представления вершин и ребер
@@ -625,5 +626,91 @@ namespace DrawGraph
 
         }
 
+
+        //Поиск элементарных циклов
+        private void DFScycle(int u, int endV, int[] color, int unavailableEdge, List<int> cycle)
+        {
+            if (u != endV)
+                color[u] = 2;
+            else
+            {
+                if (cycle.Count >= 2)
+                {
+                    cycle.Reverse();
+                    string s = cycle[0].ToString();
+                    for (int i = 1; i < cycle.Count; i++)
+                        s += "-" + cycle[i].ToString();
+
+                    bool flag = false; // есть ли палиндром для этого цикла графа в массиве?
+                    foreach (string storedCycle in cyclesList)
+                        if (storedCycle == s)
+                        {
+                            flag = true;
+                            break;
+                        }
+
+                    if (!flag)
+                    {
+                        cycle.Reverse();
+                        s = cycle[0].ToString();
+                        for (int i = 1; i < cycle.Count; i++)
+                            s += "-" + cycle[i].ToString();
+                        cyclesList.Add(s); // добавляем цикл в массив
+                    }
+                    return;
+                }
+            }
+
+            foreach (var edge in edges)
+            {
+                int w = edges.IndexOf(edge);
+                if (w == unavailableEdge)
+                    continue;
+
+                if (color[edge.EndVertex - 1] == 1 && edge.StartVertex - 1 == u)
+                {
+                    List<int> cycleNEW = new List<int>(cycle);
+                    cycleNEW.Add(edge.EndVertex);
+                    DFScycle(edge.EndVertex - 1, endV, color, w, cycleNEW);
+                    color[edge.EndVertex - 1] = 1;
+                }
+                else if (color[edge.StartVertex - 1] == 1 && edge.EndVertex - 1 == u)
+                {
+                    List<int> cycleNEW = new List<int>(cycle);
+                    cycleNEW.Add(edge.StartVertex);
+                    DFScycle(edge.StartVertex - 1, endV, color, w, cycleNEW);
+                    color[edge.StartVertex - 1] = 1;
+                }
+            }
+        }
+        //Событие поиска элементарных циклов
+        private void searchForElementaryCyclesBTN_Click(object sender, EventArgs e)
+        {
+            cyclesList.Clear(); // очистка массива перед новым поиском
+                                // 1-white 2-black
+            int[] color = new int[vertices.Count];
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                for (int k = 0; k < vertices.Count; k++)
+                    color[k] = 1;
+
+                List<int> cycle = new List<int>();
+                cycle.Add(i + 1);
+                DFScycle(i, i, color, -1, cycle);             
+            }
+            if (cyclesList.Count > 0)
+            {
+                string result = "Найденные элементарные циклы:\n";
+                foreach (string cycleString in cyclesList)
+                {
+                    result += cycleString + "\n";
+                }
+                MessageBox.Show(result);
+            }
+            else
+            {
+                MessageBox.Show("Элементарные циклы не найдены.");
+            }
+        }
     }
 }

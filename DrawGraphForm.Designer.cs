@@ -275,8 +275,9 @@ namespace DrawGraph
             this.searchForElementaryCyclesBTN.Name = "searchForElementaryCyclesBTN";
             this.searchForElementaryCyclesBTN.Size = new System.Drawing.Size(343, 66);
             this.searchForElementaryCyclesBTN.TabIndex = 13;
-            this.searchForElementaryCyclesBTN.Text = "Алгоритм Деикстры";
+            this.searchForElementaryCyclesBTN.Text = "Поиск элементарных циклов";
             this.searchForElementaryCyclesBTN.UseVisualStyleBackColor = false;
+            this.searchForElementaryCyclesBTN.Click += new System.EventHandler(this.searchForElementaryCyclesBTN_Click);
             // 
             // vertexAdjacencyMatrixLB
             // 
