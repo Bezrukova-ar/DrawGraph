@@ -243,6 +243,7 @@ namespace DrawGraph
             this.buildingALLPathsBTN.TabIndex = 16;
             this.buildingALLPathsBTN.Text = "Построение всех путей";
             this.buildingALLPathsBTN.UseVisualStyleBackColor = false;
+            this.buildingALLPathsBTN.Click += new System.EventHandler(this.buildingALLPathsBTN_Click);
             // 
             // weightMatrixCalculationBTN
             // 

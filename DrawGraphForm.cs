@@ -23,7 +23,7 @@ namespace DrawGraph
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
         private List<string> cyclesList = new List<string>(); // Коллекция для хранения циклов
-
+        List<string> searchResults = new List<string>(); // коллекция для хранения результата поиска элементарных цепей
 
         // Вложенные классы для представления вершин и ребер
         private class Vertex
@@ -493,11 +493,13 @@ namespace DrawGraph
         {
             MessageBox.Show($"Номер вершины: {vertex.Number}\nСтепень вершины: {GetVertexDegree(vertex)}", "Информация об элементе");
         }
+
         //вывод информации если элемент - ребро
         private void ShowEdgeInfo(Edge edge)
         {
             MessageBox.Show($"Вес ребра: {edge.Weight}\nПервая вершина: {edge.StartVertex}\nВторая вершина: {edge.EndVertex}", "Информация об элементе");
         }
+
         // Функция для получения степени вершины 
         private int GetVertexDegree(Vertex vertex)
         {
@@ -511,11 +513,13 @@ namespace DrawGraph
 
             return degree;
         }
+
         //Функция удаления ребра
         private void deleteEdge(Edge edge)
         {
             edges.Remove(edge);
         }
+
         //Функция удаления верщины
         private void deleteVertex(Vertex vertex)
         {
@@ -552,6 +556,7 @@ namespace DrawGraph
             }
 
         }
+
         //Событие вычисления матрицы смежности
         private void calculationOfVertexAdjacencyMatrixBTN_Click(object sender, EventArgs e)
         {
@@ -569,6 +574,7 @@ namespace DrawGraph
                 vertexAdjacencyMatrixLB.Items.Add(row);
             }
         }
+
         //Событие вычисление матрицы весов
         private void weightMatrixCalculationBTN_Click(object sender, EventArgs e)
         {
@@ -586,6 +592,63 @@ namespace DrawGraph
                 weightMatrixLB.Items.Add(row);
             }
         }
+
+        //Событие поиска элементарных циклов
+        private void searchForElementaryCyclesBTN_Click(object sender, EventArgs e)
+        {
+            cyclesList.Clear(); // очистка массива перед новым поиском
+                                // 1-white 2-black
+            int[] color = new int[vertices.Count];
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                for (int k = 0; k < vertices.Count; k++)
+                    color[k] = 1;
+
+                List<int> cycle = new List<int>();
+                cycle.Add(i + 1);
+                DFScycle(i, i, color, -1, cycle);
+            }
+            if (cyclesList.Count > 0)
+            {
+                string result = "Найденные элементарные циклы:\n";
+                foreach (string cycleString in cyclesList)
+                {
+                    result += cycleString + "\n";
+                }
+                MessageBox.Show(result);
+            }
+            else
+            {
+                MessageBox.Show("Элементарные циклы не найдены.");
+            }
+        }
+
+        //Событие поиска всех путей
+        private void buildingALLPathsBTN_Click(object sender, EventArgs e)
+        {
+            string allPaths = "";
+            for (int i = 1; i <= vertices.Count; i++)
+            {
+                for (int j = 1; j <= vertices.Count; j++)
+                {
+                    if (i != j)
+                    {
+                        List<List<int>> bfsPaths = FindElementaryPathsBFS(i, j);
+
+                        // Добавляем результаты в общую строку
+                        string result="";
+                        foreach (List<int> path in bfsPaths)
+                        {
+                            result += string.Join(" -> ", path) + "\n";
+                        }
+
+                        allPaths += result;
+                    }
+                }
+            }
+            MessageBox.Show(allPaths, "All Elementary Paths");
+        }
+
         //Метод вычисления матрицы весов
         public int[,] GetAdjacencyMatrixWeight()
         {
@@ -608,6 +671,7 @@ namespace DrawGraph
 
             return adjacencyMatrix;
         }
+
         //Метод вычисления матрицы смежности вершин
         public int[,] GetAdjacencyMatrixVertex()
         {
@@ -625,7 +689,6 @@ namespace DrawGraph
             return adjacencyMatrix;
 
         }
-
 
         //Поиск элементарных циклов
         private void DFScycle(int u, int endV, int[] color, int unavailableEdge, List<int> cycle)
@@ -683,34 +746,39 @@ namespace DrawGraph
                 }
             }
         }
-        //Событие поиска элементарных циклов
-        private void searchForElementaryCyclesBTN_Click(object sender, EventArgs e)
-        {
-            cyclesList.Clear(); // очистка массива перед новым поиском
-                                // 1-white 2-black
-            int[] color = new int[vertices.Count];
-            for (int i = 0; i < vertices.Count; i++)
-            {
-                for (int k = 0; k < vertices.Count; k++)
-                    color[k] = 1;
 
-                List<int> cycle = new List<int>();
-                cycle.Add(i + 1);
-                DFScycle(i, i, color, -1, cycle);             
-            }
-            if (cyclesList.Count > 0)
+        // Обход в ширину для поиска элементарных цепей
+        public List<List<int>> FindElementaryPathsBFS(int startVertex, int endVertex)
+        {
+            List<List<int>> paths = new List<List<int>>();
+            Queue<List<int>> queue = new Queue<List<int>>();
+
+            queue.Enqueue(new List<int> { startVertex });
+
+            while (queue.Count > 0)
             {
-                string result = "Найденные элементарные циклы:\n";
-                foreach (string cycleString in cyclesList)
+                List<int> path = queue.Dequeue();
+                int currentVertex = path[path.Count - 1];
+
+                if (currentVertex == endVertex)
                 {
-                    result += cycleString + "\n";
+                    paths.Add(path);
+                    continue;
                 }
-                MessageBox.Show(result);
+
+                foreach (Edge edge in edges)
+                {
+                    if (edge.StartVertex == currentVertex && !path.Contains(edge.EndVertex))
+                    {
+                        List<int> newPath = new List<int>(path);
+                        newPath.Add(edge.EndVertex);
+                        queue.Enqueue(newPath);
+                    }
+                }
             }
-            else
-            {
-                MessageBox.Show("Элементарные циклы не найдены.");
-            }
+
+            return paths;
         }
     }
 }
+
