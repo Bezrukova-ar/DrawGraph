@@ -231,6 +231,7 @@ namespace DrawGraph
             this.saveGrathBTN.TabIndex = 17;
             this.saveGrathBTN.Text = "Сохранить граф";
             this.saveGrathBTN.UseVisualStyleBackColor = false;
+            this.saveGrathBTN.Click += new System.EventHandler(this.saveGrathBTN_Click);
             // 
             // buildingALLPathsBTN
             // 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
 namespace DrawGraph
 {
@@ -23,7 +24,6 @@ namespace DrawGraph
         private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
         private List<Edge> edges = new List<Edge>(); //Коллекция ребер
         private List<string> cyclesList = new List<string>(); // Коллекция для хранения циклов
-        List<string> searchResults = new List<string>(); // коллекция для хранения результата поиска элементарных цепей
 
         // Вложенные классы для представления вершин и ребер
         private class Vertex
@@ -778,6 +778,33 @@ namespace DrawGraph
             }
 
             return paths;
+        }
+
+        //Событие охранения графа
+        private void saveGrathBTN_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png|Bitmap Image|*.bmp";
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+
+                Bitmap bitmap = new Bitmap(sheet.Width, sheet.Height);
+                sheet.DrawToBitmap(bitmap, sheet.Bounds);
+
+                switch (saveDialog.FilterIndex)
+                {
+                    case 1:
+                        bitmap.Save(saveDialog.FileName, ImageFormat.Jpeg);
+                        break;
+                    case 2:
+                        bitmap.Save(saveDialog.FileName, ImageFormat.Png);
+                        break;
+                    case 3:
+                        bitmap.Save(saveDialog.FileName, ImageFormat.Bmp);
+                        break;
+                }
+            }
         }
     }
 }
