@@ -84,6 +84,9 @@ namespace DrawGraph
 
             // Построение графа
             DrawGraph();
+
+            IndividualTaskForm individualTaskForm = new IndividualTaskForm();
+            individualTaskForm.Show();
         }
         //Метод для отрисовки индивидуального графа
         private void DrawGraph()
@@ -646,7 +649,7 @@ namespace DrawGraph
                     }
                 }
             }
-            MessageBox.Show(allPaths, "All Elementary Paths");
+            MessageBox.Show(allPaths, "Все элементарные цепи");
         }
 
         //Метод вычисления матрицы весов
@@ -780,7 +783,7 @@ namespace DrawGraph
             return paths;
         }
 
-        //Событие охранения графа
+        //Событие сохранения графа
         private void saveGrathBTN_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();

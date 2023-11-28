@@ -53,10 +53,19 @@
     <Compile Include="DrawGraphForm.Designer.cs">
       <DependentUpon>DrawGraphForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IndividualTask.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IndividualTask.Designer.cs">
+      <DependentUpon>IndividualTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DrawGraphForm.resx">
       <DependentUpon>DrawGraphForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IndividualTask.resx">
+      <DependentUpon>IndividualTask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -104,6 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\trashcan_delete_remove_trash_icon_178327.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\1.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

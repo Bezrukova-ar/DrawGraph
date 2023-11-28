@@ -117,32 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="close_circle_remove_delete_icon_149506" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\close_circle_remove_delete_icon_149506.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="pointinghand_100160" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pointinghand_100160.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="trashcan_delete_remove_trash_icon_178327" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\trashcan_delete_remove_trash_icon_178327.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="pencil-striped-symbol-for-interface-edit-buttons_icon-icons.com_56782" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pencil-striped-symbol-for-interface-edit-buttons_icon-icons.com_56782.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="circle_icon_211799" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\circle_icon_211799.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="line_icon_151229" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\line_icon_151229.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="курсор" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\курсор.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="pointinghand_1001601" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pointinghand_1001601.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
 </root>
