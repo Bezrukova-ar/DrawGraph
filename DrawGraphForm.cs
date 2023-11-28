@@ -225,15 +225,15 @@ namespace DrawGraph
                 float weightPositionY = start.Y + (end.Y - start.Y) / 3;
 
                 // Вывод веса ребра в первой трети
-                g.DrawString(edge.Weight.ToString(), weightFont, Brushes.DarkRed, weightPositionX, weightPositionY);
+                g.DrawString(edge.Weight.ToString(), boldFont, Brushes.DarkRed, weightPositionX, weightPositionY);
             }
-
+           
             // Рисование каждой вершины из коллекции vertices
             foreach (Graph.Vertex vertex in graph.vertices)
             {
 
-                float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
-                float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
+                float textWidth = g.MeasureString(vertex.Number.ToString(), boldFont).Width;
+                float textHeight = g.MeasureString(vertex.Number.ToString(), boldFont).Height;
 
                 // Учитываем радиус круга при расчете координат центра
                 float x = vertex.Position.X - 10;  // Учитываем половину диаметра (20/2)
@@ -251,7 +251,7 @@ namespace DrawGraph
                 float textX = x - textWidth / 2 + 10;  // Учитываем половину ширины текста
                 float textY = y - textHeight / 2 + 10; // Учитываем половину высоты текста
 
-                g.DrawString(vertex.Number.ToString(), Font, Brushes.Black, textX, textY);
+                g.DrawString(vertex.Number.ToString(), boldFont, Brushes.Black, textX, textY);
             }
 
         }
