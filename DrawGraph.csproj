@@ -53,6 +53,7 @@
     <Compile Include="DrawGraphForm.Designer.cs">
       <DependentUpon>DrawGraphForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Graph.cs" />
     <Compile Include="IndividualTask.cs">
       <SubType>Form</SubType>
     </Compile>

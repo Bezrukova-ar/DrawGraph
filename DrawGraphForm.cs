@@ -21,66 +21,39 @@ namespace DrawGraph
         }
 
         int selectedStartVertex = -1; //Выбор вершины для рисования ребер
-        private List<Vertex> vertices = new List<Vertex>(); //Коллекция вершин
-        private List<Edge> edges = new List<Edge>(); //Коллекция ребер
+        private Graph graph = new Graph(); // экземпляр класса Graph для доступа к коллекциям через этот экземпляр
         private List<string> cyclesList = new List<string>(); // Коллекция для хранения циклов
 
-        // Вложенные классы для представления вершин и ребер
-        private class Vertex
-        {
-            public int Number { get; set; }
-            public Point Position { get; set; }
-
-            // Конструктор для установки номера и позиции вершины
-            public Vertex(int number, Point position)
-            {
-                Number = number;
-                Position = position;
-            }
-        }
-
-        private class Edge
-        {
-            public int StartVertex { get; set; }
-            public int EndVertex { get; set; }
-            public int Weight { get; set; }
-
-            public Edge(int startVertex, int endVertex, int weight)
-            {
-                StartVertex = startVertex;
-                EndVertex = endVertex;
-                Weight = weight;
-            }
-        }
+        
         //Загрузка графа-индивидуального задания
         private void BuildGraphButton_Click(object sender, EventArgs e)
         {
             // Очистка коллекций перед построением
-            vertices.Clear();
-            edges.Clear();
+            graph.vertices.Clear();
+            graph.edges.Clear();
 
             //Параметры моего графа
             //координаты вершин
-            vertices.Add(new Vertex(1, new Point(300, 45)));
-            vertices.Add(new Vertex(2, new Point(385, 90)));
-            vertices.Add(new Vertex(3, new Point(430, 175)));
-            vertices.Add(new Vertex(4, new Point(385, 260)));
-            vertices.Add(new Vertex(5, new Point(300, 305)));
-            vertices.Add(new Vertex(6, new Point(215, 260)));
-            vertices.Add(new Vertex(7, new Point(170, 175)));
-            vertices.Add(new Vertex(8, new Point(215, 90)));
+            graph.vertices.Add(new Graph.Vertex(1, new Point(300, 45)));
+            graph.vertices.Add(new Graph.Vertex(2, new Point(385, 90)));
+            graph.vertices.Add(new Graph.Vertex(3, new Point(430, 175)));
+            graph.vertices.Add(new Graph.Vertex(4, new Point(385, 260)));
+            graph.vertices.Add(new Graph.Vertex(5, new Point(300, 305)));
+            graph.vertices.Add(new Graph.Vertex(6, new Point(215, 260)));
+            graph.vertices.Add(new Graph.Vertex(7, new Point(170, 175)));
+            graph.vertices.Add(new Graph.Vertex(8, new Point(215, 90)));
 
             //какие вершины соединяют ребра                
-            edges.Add(new Edge(1, 2, 2));
-            edges.Add(new Edge(1, 8, 5));
-            edges.Add(new Edge(2, 8, 3));
-            edges.Add(new Edge(2, 6, 1));
-            edges.Add(new Edge(2, 4, 1));
-            edges.Add(new Edge(3, 7, 7));
-            edges.Add(new Edge(3, 4, 5));
-            edges.Add(new Edge(4, 8, 2));
-            edges.Add(new Edge(4, 5, 1));
-            edges.Add(new Edge(5, 6, 2));
+            graph.edges.Add(new Graph.Edge(1, 2, 2));
+            graph.edges.Add(new Graph.Edge(1, 8, 5));
+            graph.edges.Add(new Graph.Edge(2, 8, 3));
+            graph.edges.Add(new Graph.Edge(2, 6, 1));
+            graph.edges.Add(new Graph.Edge(2, 4, 1));
+            graph.edges.Add(new Graph.Edge(3, 7, 7));
+            graph.edges.Add(new Graph.Edge(3, 4, 5));
+            graph.edges.Add(new Graph.Edge(4, 8, 2));
+            graph.edges.Add(new Graph.Edge(4, 5, 1));
+            graph.edges.Add(new Graph.Edge(5, 6, 2));
 
             // Построение графа
             DrawGraph();
@@ -99,11 +72,11 @@ namespace DrawGraph
                 Font boldFont = new Font(Font, FontStyle.Bold);
 
                 //Рисование ребер
-                foreach (var edge in edges)
+                foreach (var edge in graph.edges)
                 {
 
-                    Point start = vertices.Find(v => v.Number == edge.StartVertex).Position;
-                    Point end = vertices.Find(v => v.Number == edge.EndVertex).Position;
+                    Point start = graph.vertices.Find(v => v.Number == edge.StartVertex).Position;
+                    Point end = graph.vertices.Find(v => v.Number == edge.EndVertex).Position;
 
                     // Рисование толстых линий
                     using (Pen edgePen = new Pen(Color.Black, 2f))
@@ -120,7 +93,7 @@ namespace DrawGraph
                 }
 
                 // Рисование вершин
-                foreach (var vertex in vertices)
+                foreach (var vertex in graph.vertices)
                 {
                     float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
                     float textHeight = g.MeasureString(vertex.Number.ToString(), Font).Height;
@@ -155,10 +128,10 @@ namespace DrawGraph
                 Point clickPosition = e.Location;
 
                 // Создание вершины на месте щелчка мыши с учетом номера и позиции
-                Vertex newVertex = new Vertex(vertices.Count + 1, clickPosition);
+                Graph.Vertex newVertex = new Graph.Vertex(graph.vertices.Count + 1, clickPosition);
 
                 // Добавление вершины в коллекцию vertices
-                vertices.Add(newVertex);
+                graph.vertices.Add(newVertex);
 
                 // Перерисовка содержимого PictureBox для отображения добавленной вершины
                 sheet.Invalidate();
@@ -192,8 +165,8 @@ namespace DrawGraph
                                 int weight = GetWeightFromUserInput();
 
                                 // Создание нового ребра и добавление его в коллекцию ребер
-                                Edge newEdge = new Edge(selectedStartVertex, selectedEndVertex, weight);
-                                edges.Add(newEdge);
+                                Graph.Edge newEdge = new Graph.Edge(selectedStartVertex, selectedEndVertex, weight);
+                                graph.edges.Add(newEdge);
 
                                 // Сброс выбранных вершин
                                 selectedStartVertex = -1;
@@ -220,10 +193,10 @@ namespace DrawGraph
                 Point clickPoint = sheet.PointToClient(Cursor.Position);
 
                 // Проверьте, находится ли щелчок на каком-то ребре
-                foreach (Edge edge in edges)
+                foreach (Graph.Edge edge in graph.edges)
                 {
-                    Vertex startVertex = vertices.Find(v => v.Number == edge.StartVertex);
-                    Vertex endVertex = vertices.Find(v => v.Number == edge.EndVertex);
+                    Graph.Vertex startVertex = graph.vertices.Find(v => v.Number == edge.StartVertex);
+                    Graph.Vertex endVertex = graph.vertices.Find(v => v.Number == edge.EndVertex);
 
                     // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
                     if (IsPointNearLineSegment(clickPoint, startVertex.Position, endVertex.Position, 5))
@@ -250,14 +223,14 @@ namespace DrawGraph
                 object clickedElement = GetClickedElement(mouseClick);
 
                 // Отображение информации о выбранном элементе 
-                if (clickedElement is Vertex)
+                if (clickedElement is Graph.Vertex)
                 {
-                    Vertex clickedVertex = (Vertex)clickedElement;
+                    Graph.Vertex clickedVertex = (Graph.Vertex)clickedElement;
                     ShowVertexInfo(clickedVertex);
                 }
-                else if (clickedElement is Edge)
+                else if (clickedElement is Graph.Edge)
                 {
-                    Edge clickedEdge = (Edge)clickedElement;
+                    Graph.Edge clickedEdge = (Graph.Edge)clickedElement;
                     ShowEdgeInfo(clickedEdge);
                 }
             }
@@ -268,16 +241,16 @@ namespace DrawGraph
                 // Определите тип элемента (вершина или ребро) 
                 object clickedElement = GetClickedElement(mouseClick);
                 // Удалить выбранный элемент
-                if (clickedElement is Vertex)
+                if (clickedElement is Graph.Vertex)
                 {
-                    Vertex clickedVertex = (Vertex)clickedElement;
+                    Graph.Vertex clickedVertex = (Graph.Vertex)clickedElement;
                     //Метод удаления вершины
                     deleteVertex(clickedVertex);
                     sheet.Invalidate();
                 }
-                else if (clickedElement is Edge)
+                else if (clickedElement is Graph.Edge)
                 {
-                    Edge clickedEdge = (Edge)clickedElement;
+                    Graph.Edge clickedEdge = (Graph.Edge)clickedElement;
                     //Метод удаления ребра
                     deleteEdge(clickedEdge);
                     sheet.Invalidate();
@@ -291,11 +264,11 @@ namespace DrawGraph
             Graphics g = e.Graphics;
             Font weightFont = new Font(Font.FontFamily, 12f);
             //Рисование ребер
-            foreach (var edge in edges)
+            foreach (var edge in graph.edges)
             {
 
-                Point start = vertices.Find(v => v.Number == edge.StartVertex).Position;
-                Point end = vertices.Find(v => v.Number == edge.EndVertex).Position;
+                Point start = graph.vertices.Find(v => v.Number == edge.StartVertex).Position;
+                Point end = graph.vertices.Find(v => v.Number == edge.EndVertex).Position;
 
                 // Рисование толстых линий
                 using (Pen edgePen = new Pen(Color.Black, 2f))
@@ -312,7 +285,7 @@ namespace DrawGraph
             }
 
             // Рисование каждой вершины из коллекции vertices
-            foreach (Vertex vertex in vertices)
+            foreach (Graph.Vertex vertex in graph.vertices)
             {
 
                 float textWidth = g.MeasureString(vertex.Number.ToString(), Font).Width;
@@ -341,7 +314,7 @@ namespace DrawGraph
         // Метод для проверки, существует ли ребро между двумя вершинами
         private bool EdgeExists(int startVertex, int endVertex)
         {
-            return edges.Any(edge =>
+            return graph.edges.Any(edge =>
                 (edge.StartVertex == startVertex && edge.EndVertex == endVertex) ||
                 (edge.StartVertex == endVertex && edge.EndVertex == startVertex));
         }
@@ -385,7 +358,7 @@ namespace DrawGraph
         // Метод для получения номера вершины по ее позиции на PictureBox
         private int GetVertexNumberByPosition(Point position)
         {
-            foreach (Vertex vertex in vertices)
+            foreach (Graph.Vertex vertex in graph.vertices)
             {
                 int vertexRadius = 10;
 
@@ -407,8 +380,8 @@ namespace DrawGraph
             // Проверяем результат нажатия кнопки
             if (result == DialogResult.Yes)
             {
-                vertices.Clear();
-                edges.Clear();
+                graph.vertices.Clear();
+                graph.edges.Clear();
                 sheet.Invalidate();
             }
         }
@@ -462,7 +435,7 @@ namespace DrawGraph
         private object GetClickedElement(Point clickPosition)
         {
             // Проверка на то, что щелчок внутри вершины
-            foreach (Vertex vertex in vertices)
+            foreach (Graph.Vertex vertex in graph.vertices)
             {
 
                 if (IsPointInCircle(clickPosition, vertex.Position, 10))
@@ -471,10 +444,10 @@ namespace DrawGraph
                 }
             }
             // Проверьте, находится ли щелчок на каком-то ребре
-            foreach (Edge edge in edges)
+            foreach (Graph.Edge edge in graph.edges)
             {
-                Vertex startVertex = vertices.Find(v => v.Number == edge.StartVertex);
-                Vertex endVertex = vertices.Find(v => v.Number == edge.EndVertex);
+                Graph.Vertex startVertex = graph.vertices.Find(v => v.Number == edge.StartVertex);
+                Graph.Vertex endVertex = graph.vertices.Find(v => v.Number == edge.EndVertex);
 
                 // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
                 if (IsPointNearLineSegment(clickPosition, startVertex.Position, endVertex.Position, 5))
@@ -492,60 +465,60 @@ namespace DrawGraph
         }
 
         //вывод информации если элемент - вершина
-        private void ShowVertexInfo(Vertex vertex)
+        private void ShowVertexInfo(Graph.Vertex vertex)
         {
             MessageBox.Show($"Номер вершины: {vertex.Number}\nСтепень вершины: {GetVertexDegree(vertex)}", "Информация об элементе");
         }
 
         //вывод информации если элемент - ребро
-        private void ShowEdgeInfo(Edge edge)
+        private void ShowEdgeInfo(Graph.Edge edge)
         {
             MessageBox.Show($"Вес ребра: {edge.Weight}\nПервая вершина: {edge.StartVertex}\nВторая вершина: {edge.EndVertex}", "Информация об элементе");
         }
 
         // Функция для получения степени вершины 
-        private int GetVertexDegree(Vertex vertex)
+        private int GetVertexDegree(Graph.Vertex vertex)
         {
             int degree = 0;
 
             // количесвто вхождений как ак первая вершина
-            degree += edges.Count(edge => edge.StartVertex == vertex.Number);
+            degree += graph.edges.Count(edge => edge.StartVertex == vertex.Number);
 
             // количесвто вхождений как вторая вершина
-            degree += edges.Count(edge => edge.EndVertex == vertex.Number);
+            degree += graph.edges.Count(edge => edge.EndVertex == vertex.Number);
 
             return degree;
         }
 
         //Функция удаления ребра
-        private void deleteEdge(Edge edge)
+        private void deleteEdge(Graph.Edge edge)
         {
-            edges.Remove(edge);
+            graph.edges.Remove(edge);
         }
 
         //Функция удаления верщины
-        private void deleteVertex(Vertex vertex)
+        private void deleteVertex(Graph.Vertex vertex)
         {
             double x = vertex.Position.X;
             double y = vertex.Position.Y;
-            Vertex vertexToRemove = vertices.Find(v => v.Position.X == x && v.Position.Y == y);
+            Graph.Vertex vertexToRemove = graph.vertices.Find(v => v.Position.X == x && v.Position.Y == y);
             //int maxVertexNumber = 0; //для определения максимального номера вершины в коллекции
 
             if (vertexToRemove != null)
             {
                 int removedVertexNumber = vertexToRemove.Number;
-                vertices.Remove(vertexToRemove);
+                graph.vertices.Remove(vertexToRemove);
 
 
                 //Перенумерация вершин
-                for (int i = 0; i < vertices.Count; i++)
+                for (int i = 0; i < graph.vertices.Count; i++)
                 {
-                    vertices[i].Number = i + 1;
+                    graph.vertices[i].Number = i + 1;
                 }
 
-                edges.RemoveAll(e => e.StartVertex == vertexToRemove.Number || e.EndVertex == vertexToRemove.Number);
+                graph.edges.RemoveAll(e => e.StartVertex == vertexToRemove.Number || e.EndVertex == vertexToRemove.Number);
                 //перенумерация
-                foreach (var edge in edges)
+                foreach (var edge in graph.edges)
                 {
                     if (edge.StartVertex > removedVertexNumber)
                     {
@@ -565,11 +538,11 @@ namespace DrawGraph
         {
             int[,] adjacencyMatrix = GetAdjacencyMatrixVertex();
             vertexAdjacencyMatrixLB.Items.Clear();
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < graph.vertices.Count; i++)
             {
                 string row = "";
 
-                for (int j = 0; j < vertices.Count; j++)
+                for (int j = 0; j < graph.vertices.Count; j++)
                 {
                     row += $"{adjacencyMatrix[i, j],6}";
                 }
@@ -583,11 +556,11 @@ namespace DrawGraph
         {
             int[,] adjacencyMatrix = GetAdjacencyMatrixWeight();
             weightMatrixLB.Items.Clear();
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < graph.vertices.Count; i++)
             {
                 string row = ""; 
 
-                for (int j = 0; j < vertices.Count; j++)
+                for (int j = 0; j < graph.vertices.Count; j++)
                 {
                     row += $"{adjacencyMatrix[i, j],6}";
                 }
@@ -601,10 +574,10 @@ namespace DrawGraph
         {
             cyclesList.Clear(); // очистка массива перед новым поиском
                                 // 1-white 2-black
-            int[] color = new int[vertices.Count];
-            for (int i = 0; i < vertices.Count; i++)
+            int[] color = new int[graph.vertices.Count];
+            for (int i = 0; i < graph.vertices.Count; i++)
             {
-                for (int k = 0; k < vertices.Count; k++)
+                for (int k = 0; k < graph.vertices.Count; k++)
                     color[k] = 1;
 
                 List<int> cycle = new List<int>();
@@ -630,9 +603,9 @@ namespace DrawGraph
         private void buildingALLPathsBTN_Click(object sender, EventArgs e)
         {
             string allPaths = "";
-            for (int i = 1; i <= vertices.Count; i++)
+            for (int i = 1; i <= graph.vertices.Count; i++)
             {
-                for (int j = 1; j <= vertices.Count; j++)
+                for (int j = 1; j <= graph.vertices.Count; j++)
                 {
                     if (i != j)
                     {
@@ -656,13 +629,13 @@ namespace DrawGraph
         public int[,] GetAdjacencyMatrixWeight()
         {
             // Получаем количество вершин
-            int vertexCount = vertices.Count;
+            int vertexCount = graph.vertices.Count;
 
             // Создаем двумерный массив для матрицы весов
             int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
 
             // Заполняем матрицу весов
-            foreach (Edge edge in edges)
+            foreach (Graph.Edge edge in graph.edges)
             {
                 // Вес ребра
                 int weight = edge.Weight;
@@ -679,11 +652,11 @@ namespace DrawGraph
         public int[,] GetAdjacencyMatrixVertex()
         {
             // Получаем количество вершин
-            int vertexCount = vertices.Count;
+            int vertexCount = graph.vertices.Count;
             // Создаем двумерный массив для матрицы смежности
             int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
             // Заполняем матрицу смежности
-            foreach (Edge edge in edges)
+            foreach (Graph.Edge edge in graph.edges)
             {
                 // Устанавливаем связь между начальной и конечной вершинами
                 adjacencyMatrix[edge.StartVertex - 1, edge.EndVertex - 1] = 1;
@@ -727,9 +700,9 @@ namespace DrawGraph
                 }
             }
 
-            foreach (var edge in edges)
+            foreach (var edge in graph.edges)
             {
-                int w = edges.IndexOf(edge);
+                int w = graph.edges.IndexOf(edge);
                 if (w == unavailableEdge)
                     continue;
 
@@ -769,7 +742,7 @@ namespace DrawGraph
                     continue;
                 }
 
-                foreach (Edge edge in edges)
+                foreach (Graph.Edge edge in graph.edges)
                 {
                     if (edge.StartVertex == currentVertex && !path.Contains(edge.EndVertex))
                     {
