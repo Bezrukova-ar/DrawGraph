@@ -22,7 +22,7 @@ namespace DrawGraph
 
         int selectedStartVertex = -1; //Выбор вершины для рисования ребер
         private Graph graph = new Graph(); // экземпляр класса Graph для доступа к коллекциям через этот экземпляр
-        private List<string> cyclesList = new List<string>(); // Коллекция для хранения циклов
+       
 
         
         //Загрузка графа-индивидуального задания
@@ -81,7 +81,7 @@ namespace DrawGraph
             }
             if (drawEdgeRB.Checked) //Выполняется если выбран drawEdgeRB -отвечает за отрисовку рёбер
             {
-                int selectedVertexNumber = GetVertexNumberByPosition(e.Location); // Получение номера вершины по ее позиции
+                int selectedVertexNumber = graph.GetVertexNumberByPosition(e.Location); // Получение номера вершины по ее позиции
 
                 if (selectedVertexNumber != -1)
                 {
@@ -96,7 +96,7 @@ namespace DrawGraph
                         int selectedEndVertex = selectedVertexNumber;
 
                         // Проверка, что между выбранными вершинами еще нет ребра
-                        if (!EdgeExists(selectedStartVertex, selectedEndVertex))
+                        if (!graph.EdgeExists(selectedStartVertex, selectedEndVertex))
                         {
                             if (selectedStartVertex == selectedEndVertex)
                             {
@@ -105,7 +105,7 @@ namespace DrawGraph
                             else
                             {
                                 // Вывод окошка для ввода веса ребра
-                                int weight = GetWeightFromUserInput();
+                                int weight = graph.GetWeightFromUserInput();
 
                                 // Создание нового ребра и добавление его в коллекцию ребер
                                 Graph.Edge newEdge = new Graph.Edge(selectedStartVertex, selectedEndVertex, weight);
@@ -142,10 +142,10 @@ namespace DrawGraph
                     Graph.Vertex endVertex = graph.vertices.Find(v => v.Number == edge.EndVertex);
 
                     // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
-                    if (IsPointNearLineSegment(clickPoint, startVertex.Position, endVertex.Position, 5))
+                    if (graph.IsPointNearLineSegment(clickPoint, startVertex.Position, endVertex.Position, 5))
                     {
                         // При щелчке по ребру, откройте диалоговое окно для ввода нового веса
-                        int newWeight = GetWeightFromUserInput();
+                        int newWeight = graph.GetWeightFromUserInput();
 
                         // Обновите вес ребра в коллекции
                         edge.Weight = newWeight;
@@ -163,18 +163,18 @@ namespace DrawGraph
                 Point mouseClick = sheet.PointToClient(Cursor.Position);
 
                 // Определите тип элемента (вершина или ребро) 
-                object clickedElement = GetClickedElement(mouseClick);
+                object clickedElement = graph.GetClickedElement(mouseClick);
 
                 // Отображение информации о выбранном элементе 
                 if (clickedElement is Graph.Vertex)
                 {
                     Graph.Vertex clickedVertex = (Graph.Vertex)clickedElement;
-                    ShowVertexInfo(clickedVertex);
+                    graph.ShowVertexInfo(clickedVertex);
                 }
                 else if (clickedElement is Graph.Edge)
                 {
                     Graph.Edge clickedEdge = (Graph.Edge)clickedElement;
-                    ShowEdgeInfo(clickedEdge);
+                    graph.ShowEdgeInfo(clickedEdge);
                 }
             }
             if (deleteElementRB.Checked) //Удаление элемента
@@ -182,20 +182,20 @@ namespace DrawGraph
                 // Получить позицию щелчка мыши
                 Point mouseClick = sheet.PointToClient(Cursor.Position);
                 // Определите тип элемента (вершина или ребро) 
-                object clickedElement = GetClickedElement(mouseClick);
+                object clickedElement = graph.GetClickedElement(mouseClick);
                 // Удалить выбранный элемент
                 if (clickedElement is Graph.Vertex)
                 {
                     Graph.Vertex clickedVertex = (Graph.Vertex)clickedElement;
                     //Метод удаления вершины
-                    deleteVertex(clickedVertex);
+                    graph.deleteVertex(clickedVertex);
                     sheet.Invalidate();
                 }
                 else if (clickedElement is Graph.Edge)
                 {
                     Graph.Edge clickedEdge = (Graph.Edge)clickedElement;
                     //Метод удаления ребра
-                    deleteEdge(clickedEdge);
+                    graph.deleteEdge(clickedEdge);
                     sheet.Invalidate();
                 }
             }
@@ -255,67 +255,7 @@ namespace DrawGraph
             }
 
         }
-        // Метод для проверки, существует ли ребро между двумя вершинами
-        private bool EdgeExists(int startVertex, int endVertex)
-        {
-            return graph.edges.Any(edge =>
-                (edge.StartVertex == startVertex && edge.EndVertex == endVertex) ||
-                (edge.StartVertex == endVertex && edge.EndVertex == startVertex));
-        }
-
-        // Метод для получения веса ребра от пользователя
-        private int GetWeightFromUserInput()
-        {
-            int weight = 0;
-            bool validInput = false;
-
-            while (!validInput)
-            {
-                string input = Interaction.InputBox("Введите вес ребра (целое положительное число):", "Ввод веса ребра");
-                // Проверка на отмену ввода
-                if (input == "")
-                {
-                    MessageBox.Show("Ввод отменен. Попробуйте еще раз.");
-                    continue;
-                }
-                // Попытка преобразовать введенное значение в целое число
-                if (int.TryParse(input, out weight))
-                {
-                    // Проверка на положительное число
-                    if (weight > 0)
-                    {
-                        validInput = true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Введите положительное число.");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Введите корректное целое число.");
-                }
-            }
-            return weight;
-        }
-
-        // Метод для получения номера вершины по ее позиции на PictureBox
-        private int GetVertexNumberByPosition(Point position)
-        {
-            foreach (Graph.Vertex vertex in graph.vertices)
-            {
-                int vertexRadius = 10;
-
-                // Проверка, находится ли позиция в пределах вершины
-                if (Math.Pow(position.X - vertex.Position.X, 2) + Math.Pow(position.Y - vertex.Position.Y, 2) <= Math.Pow(vertexRadius, 2))
-                {
-                    return vertex.Number;
-                }
-            }
-            // Если не найдено ни одной вершины в указанной позиции
-            return -1;
-        }
-
+       
         //Когда нажата кнопка удалить все
         private void deleteALLGraphRB_CheckedChanged(object sender, EventArgs e)
         {
@@ -329,158 +269,11 @@ namespace DrawGraph
                 sheet.Invalidate();
             }
         }
-        // Метод для проверки, лежит ли точка на отрезке
-        private bool IsPointNearLineSegment(Point point, Point start, Point end, int tolerance)
-        {
-            double distance = PointToLineDistance(point, start, end);
-
-            // Проверка, находится ли точка в пределах погрешности
-            return distance <= tolerance;
-        }
-
-        // Метод для расчета расстояния от точки до линии, проходящей через start и end
-        private double PointToLineDistance(Point point, Point start, Point end)
-        {
-            double a = point.X - start.X;
-            double b = point.Y - start.Y;
-            double c = end.X - start.X;
-            double d = end.Y - start.Y;
-
-            double dotProduct = a * c + b * d;
-            double lengthSquared = c * c + d * d;
-
-            double param = dotProduct / lengthSquared;
-
-            double closestX, closestY;
-
-            if (param < 0 || (start.X == end.X && start.Y == end.Y))
-            {
-                closestX = start.X;
-                closestY = start.Y;
-            }
-            else if (param > 1)
-            {
-                closestX = end.X;
-                closestY = end.Y;
-            }
-            else
-            {
-                closestX = start.X + param * c;
-                closestY = start.Y + param * d;
-            }
-
-            double dx = point.X - closestX;
-            double dy = point.Y - closestY;
-
-            return Math.Sqrt(dx * dx + dy * dy);
-        }
-
-        // Функция для определения типа элемента
-        private object GetClickedElement(Point clickPosition)
-        {
-            // Проверка на то, что щелчок внутри вершины
-            foreach (Graph.Vertex vertex in graph.vertices)
-            {
-
-                if (IsPointInCircle(clickPosition, vertex.Position, 10))
-                {
-                    return vertex;
-                }
-            }
-            // Проверьте, находится ли щелчок на каком-то ребре
-            foreach (Graph.Edge edge in graph.edges)
-            {
-                Graph.Vertex startVertex = graph.vertices.Find(v => v.Number == edge.StartVertex);
-                Graph.Vertex endVertex = graph.vertices.Find(v => v.Number == edge.EndVertex);
-
-                // Проверьте, лежит ли точка щелчка на отрезке ребра с погрешностью 5 пикселей
-                if (IsPointNearLineSegment(clickPosition, startVertex.Position, endVertex.Position, 5))
-                {
-                    return edge;
-                }
-            }
-            return null; //Не найден элемент
-        }
-        // Проверка того, что щелк внутри вершины
-        private bool IsPointInCircle(Point point, Point center, int radius)
-        {
-            int distanceSquared = (point.X - center.X) * (point.X - center.X) + (point.Y - center.Y) * (point.Y - center.Y);
-            return distanceSquared <= radius * radius;
-        }
-
-        //вывод информации если элемент - вершина
-        private void ShowVertexInfo(Graph.Vertex vertex)
-        {
-            MessageBox.Show($"Номер вершины: {vertex.Number}\nСтепень вершины: {GetVertexDegree(vertex)}", "Информация об элементе");
-        }
-
-        //вывод информации если элемент - ребро
-        private void ShowEdgeInfo(Graph.Edge edge)
-        {
-            MessageBox.Show($"Вес ребра: {edge.Weight}\nПервая вершина: {edge.StartVertex}\nВторая вершина: {edge.EndVertex}", "Информация об элементе");
-        }
-
-        // Функция для получения степени вершины 
-        private int GetVertexDegree(Graph.Vertex vertex)
-        {
-            int degree = 0;
-
-            // количесвто вхождений как ак первая вершина
-            degree += graph.edges.Count(edge => edge.StartVertex == vertex.Number);
-
-            // количесвто вхождений как вторая вершина
-            degree += graph.edges.Count(edge => edge.EndVertex == vertex.Number);
-
-            return degree;
-        }
-
-        //Функция удаления ребра
-        private void deleteEdge(Graph.Edge edge)
-        {
-            graph.edges.Remove(edge);
-        }
-
-        //Функция удаления верщины
-        private void deleteVertex(Graph.Vertex vertex)
-        {
-            double x = vertex.Position.X;
-            double y = vertex.Position.Y;
-            Graph.Vertex vertexToRemove = graph.vertices.Find(v => v.Position.X == x && v.Position.Y == y);
-            //int maxVertexNumber = 0; //для определения максимального номера вершины в коллекции
-
-            if (vertexToRemove != null)
-            {
-                int removedVertexNumber = vertexToRemove.Number;
-                graph.vertices.Remove(vertexToRemove);
-
-
-                //Перенумерация вершин
-                for (int i = 0; i < graph.vertices.Count; i++)
-                {
-                    graph.vertices[i].Number = i + 1;
-                }
-
-                graph.edges.RemoveAll(e => e.StartVertex == vertexToRemove.Number || e.EndVertex == vertexToRemove.Number);
-                //перенумерация
-                foreach (var edge in graph.edges)
-                {
-                    if (edge.StartVertex > removedVertexNumber)
-                    {
-                        edge.StartVertex -= 1;
-                    }
-                    if (edge.EndVertex > removedVertexNumber)
-                    {
-                        edge.EndVertex -= 1;
-                    }
-                }
-            }
-
-        }
-
+        
         //Событие вычисления матрицы смежности
         private void calculationOfVertexAdjacencyMatrixBTN_Click(object sender, EventArgs e)
         {
-            int[,] adjacencyMatrix = GetAdjacencyMatrixVertex();
+            int[,] adjacencyMatrix = graph.GetAdjacencyMatrixVertex();
             vertexAdjacencyMatrixLB.Items.Clear();
             for (int i = 0; i < graph.vertices.Count; i++)
             {
@@ -498,7 +291,7 @@ namespace DrawGraph
         //Событие вычисление матрицы весов
         private void weightMatrixCalculationBTN_Click(object sender, EventArgs e)
         {
-            int[,] adjacencyMatrix = GetAdjacencyMatrixWeight();
+            int[,] adjacencyMatrix = graph.GetAdjacencyMatrixWeight();
             weightMatrixLB.Items.Clear();
             for (int i = 0; i < graph.vertices.Count; i++)
             {
@@ -516,7 +309,7 @@ namespace DrawGraph
         //Событие поиска элементарных циклов
         private void searchForElementaryCyclesBTN_Click(object sender, EventArgs e)
         {
-            cyclesList.Clear(); // очистка массива перед новым поиском
+            graph.cyclesList.Clear(); // очистка массива перед новым поиском
                                 // 1-white 2-black
             int[] color = new int[graph.vertices.Count];
             for (int i = 0; i < graph.vertices.Count; i++)
@@ -526,12 +319,12 @@ namespace DrawGraph
 
                 List<int> cycle = new List<int>();
                 cycle.Add(i + 1);
-                DFScycle(i, i, color, -1, cycle);
+                graph.DFScycle(i, i, color, -1, cycle);
             }
-            if (cyclesList.Count > 0)
+            if (graph.cyclesList.Count > 0)
             {
                 string result = "Найденные элементарные циклы:\n";
-                foreach (string cycleString in cyclesList)
+                foreach (string cycleString in graph.cyclesList)
                 {
                     result += cycleString + "\n";
                 }
@@ -553,7 +346,7 @@ namespace DrawGraph
                 {
                     if (i != j)
                     {
-                        List<List<int>> bfsPaths = FindElementaryPathsBFS(i, j);
+                        List<List<int>> bfsPaths = graph.FindElementaryPathsBFS(i, j);
 
                         // Добавляем результаты в общую строку
                         string result="";
@@ -569,137 +362,7 @@ namespace DrawGraph
             MessageBox.Show(allPaths, "Все элементарные цепи");
         }
 
-        //Метод вычисления матрицы весов
-        public int[,] GetAdjacencyMatrixWeight()
-        {
-            // Получаем количество вершин
-            int vertexCount = graph.vertices.Count;
-
-            // Создаем двумерный массив для матрицы весов
-            int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
-
-            // Заполняем матрицу весов
-            foreach (Graph.Edge edge in graph.edges)
-            {
-                // Вес ребра
-                int weight = edge.Weight;
-
-                // Устанавливаем связь между начальной и конечной вершинами
-                adjacencyMatrix[edge.StartVertex - 1, edge.EndVertex - 1] = weight;
-                adjacencyMatrix[edge.EndVertex - 1, edge.StartVertex - 1] = weight; // Для неориентированного графа
-            }
-
-            return adjacencyMatrix;
-        }
-
-        //Метод вычисления матрицы смежности вершин
-        public int[,] GetAdjacencyMatrixVertex()
-        {
-            // Получаем количество вершин
-            int vertexCount = graph.vertices.Count;
-            // Создаем двумерный массив для матрицы смежности
-            int[,] adjacencyMatrix = new int[vertexCount, vertexCount];
-            // Заполняем матрицу смежности
-            foreach (Graph.Edge edge in graph.edges)
-            {
-                // Устанавливаем связь между начальной и конечной вершинами
-                adjacencyMatrix[edge.StartVertex - 1, edge.EndVertex - 1] = 1;
-                adjacencyMatrix[edge.EndVertex - 1, edge.StartVertex - 1] = 1; // Для неориентированного графа
-            }
-            return adjacencyMatrix;
-
-        }
-
-        //Поиск элементарных циклов
-        private void DFScycle(int u, int endV, int[] color, int unavailableEdge, List<int> cycle)
-        {
-            if (u != endV)
-                color[u] = 2;
-            else
-            {
-                if (cycle.Count >= 2)
-                {
-                    cycle.Reverse();
-                    string s = cycle[0].ToString();
-                    for (int i = 1; i < cycle.Count; i++)
-                        s += "-" + cycle[i].ToString();
-
-                    bool flag = false; // есть ли палиндром для этого цикла графа в массиве?
-                    foreach (string storedCycle in cyclesList)
-                        if (storedCycle == s)
-                        {
-                            flag = true;
-                            break;
-                        }
-
-                    if (!flag)
-                    {
-                        cycle.Reverse();
-                        s = cycle[0].ToString();
-                        for (int i = 1; i < cycle.Count; i++)
-                            s += "-" + cycle[i].ToString();
-                        cyclesList.Add(s); // добавляем цикл в массив
-                    }
-                    return;
-                }
-            }
-
-            foreach (var edge in graph.edges)
-            {
-                int w = graph.edges.IndexOf(edge);
-                if (w == unavailableEdge)
-                    continue;
-
-                if (color[edge.EndVertex - 1] == 1 && edge.StartVertex - 1 == u)
-                {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(edge.EndVertex);
-                    DFScycle(edge.EndVertex - 1, endV, color, w, cycleNEW);
-                    color[edge.EndVertex - 1] = 1;
-                }
-                else if (color[edge.StartVertex - 1] == 1 && edge.EndVertex - 1 == u)
-                {
-                    List<int> cycleNEW = new List<int>(cycle);
-                    cycleNEW.Add(edge.StartVertex);
-                    DFScycle(edge.StartVertex - 1, endV, color, w, cycleNEW);
-                    color[edge.StartVertex - 1] = 1;
-                }
-            }
-        }
-
-        // Обход в ширину для поиска элементарных цепей
-        public List<List<int>> FindElementaryPathsBFS(int startVertex, int endVertex)
-        {
-            List<List<int>> paths = new List<List<int>>();
-            Queue<List<int>> queue = new Queue<List<int>>();
-
-            queue.Enqueue(new List<int> { startVertex });
-
-            while (queue.Count > 0)
-            {
-                List<int> path = queue.Dequeue();
-                int currentVertex = path[path.Count - 1];
-
-                if (currentVertex == endVertex)
-                {
-                    paths.Add(path);
-                    continue;
-                }
-
-                foreach (Graph.Edge edge in graph.edges)
-                {
-                    if (edge.StartVertex == currentVertex && !path.Contains(edge.EndVertex))
-                    {
-                        List<int> newPath = new List<int>(path);
-                        newPath.Add(edge.EndVertex);
-                        queue.Enqueue(newPath);
-                    }
-                }
-            }
-
-            return paths;
-        }
-
+       
         //Событие сохранения графа
         private void saveGrathBTN_Click(object sender, EventArgs e)
         {
